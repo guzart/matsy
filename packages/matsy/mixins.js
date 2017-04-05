@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.typoButton = exports.typoPreferredFont = exports.materialAnimationDefault = exports.focusShadow = undefined;
 
 var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
 
@@ -12,15 +13,15 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n    transition-du
     _templateObject2 = (0, _taggedTemplateLiteral3.default)(['\n    font-family: ', ';\n  '], ['\n    font-family: ', ';\n  ']),
     _templateObject3 = (0, _taggedTemplateLiteral3.default)(['\n    font-size: 14px;\n    font-weight: 500;\n    text-transform: uppercase;\n    line-height: 1;\n    letter-spacing: 0;\n\n    ', '\n    ', '\n  '], ['\n    font-size: 14px;\n    font-weight: 500;\n    text-transform: uppercase;\n    line-height: 1;\n    letter-spacing: 0;\n\n    ', '\n    ', '\n  ']);
 
-exports.materialAnimationDefault = materialAnimationDefault;
-exports.typoPreferredFont = typoPreferredFont;
-exports.typoButton = typoButton;
-
 var _styledComponents = require('styled-components');
 
 var _theme = require('./theme');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function focusShadow() {
+  return 'box-shadow: 0 0 8px rgba(0, 0, 0, .18), 0 8px 16px rgba(0, 0, 0, .36);';
+}
 
 function materialAnimationDefault() {
   var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '0.2s';
@@ -44,3 +45,8 @@ function typoButton() {
   var contrastStyle = contrast ? 'opacity: 0.87;' : '';
   return (0, _styledComponents.css)(_templateObject3, typoPreferredFont(usePreferred), contrastStyle);
 }
+
+exports.focusShadow = focusShadow;
+exports.materialAnimationDefault = materialAnimationDefault;
+exports.typoPreferredFont = typoPreferredFont;
+exports.typoButton = typoButton;

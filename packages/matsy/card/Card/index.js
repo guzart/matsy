@@ -14,9 +14,9 @@ var _styledComponents = require('styled-components');
 
 var _styledComponents2 = _interopRequireDefault(_styledComponents);
 
-var _theme = require('../theme');
+var _theme = require('../../theme');
 
-var _shadow = require('../shadow');
+var _shadow = require('../../shadow');
 
 var _shadow2 = _interopRequireDefault(_shadow);
 
