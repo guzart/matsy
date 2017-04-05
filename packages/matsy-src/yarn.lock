@@ -3716,9 +3716,11 @@ marked@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
 
-matsy@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/matsy/-/matsy-0.1.0.tgz#13afd90ffb32c49579ad566b34f32973cd80a16f"
+matsy@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/matsy/-/matsy-0.2.0.tgz#ba07dc436aa7405450ca934aae0884f18b48a44d"
+  dependencies:
+    babel-runtime "^6.23.0"
 
 media-typer@0.3.0:
   version "0.3.0"
