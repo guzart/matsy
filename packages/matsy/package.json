@@ -28,6 +28,7 @@
     "styled-components": "2.0.0-14"
   },
   "devDependencies": {
+    "danger": "^0.14.2",
     "react": "^15.4",
     "styled-components": "2.0.0-14"
   }
