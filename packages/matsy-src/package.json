@@ -29,6 +29,8 @@
     "@frctl/fractal": "^1.1.3",
     "@frctl/mandelbrot": "^1.1.0",
     "babel-core": "^6.24.0",
+    "babel-eslint": "^7.2.1",
+    "babel-plugin-styled-components": "^1.1.4",
     "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
@@ -38,8 +40,11 @@
     "danger": "^0.14.2",
     "debug": "^2.6.3",
     "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-config-airbnb-base": "^11.1.3",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
     "flow-bin": "^0.43.0",
     "glob": "^7.1.1",
     "gulp": "^3.9.1",
@@ -47,12 +52,12 @@
     "matsy": "^0.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "styled-components": "^1.4.4"
+    "styled-components": "2.0.0-14"
   },
   "peerDependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "styled-components": "^1.4.4"
+    "styled-components": "2.0.0-14"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0"
