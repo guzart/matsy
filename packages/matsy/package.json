@@ -1,0 +1,24 @@
+{
+  "name": "matsy",
+  "version": "0.1.0",
+  "description": "Material design React components using styled-components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guzart/matsy.git"
+  },
+  "keywords": [
+    "material-design",
+    "react",
+    "styled-components"
+  ],
+  "author": "Arturo Guzman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guzart/matsy/issues"
+  },
+  "homepage": "https://github.com/guzart/matsy#readme"
+}
