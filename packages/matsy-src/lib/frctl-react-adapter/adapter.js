@@ -9,6 +9,9 @@ const { cleanFilepath } = require('./utils');
 
 const babelOptions = {
   babelrc: false,
+  // plugins: [
+  //   [require.resolve('babel-plugin-styled-components'), { ssr: true }]
+  // ],
   presets: [
     require.resolve('babel-preset-env'),
     require.resolve('babel-preset-react')
