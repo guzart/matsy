@@ -1,8 +1,11 @@
-// @flow
+'use strict';
 
-export const black = 'rgb(0, 0, 0)';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var black = exports.black = 'rgb(0, 0, 0)';
 
-export const blueGrey = {
+var blueGrey = exports.blueGrey = {
   C50: 'rgb(236, 239, 241)',
   C100: 'rgb(207, 216, 220)',
   C200: 'rgb(176, 190, 197)',
@@ -12,10 +15,10 @@ export const blueGrey = {
   C600: 'rgb(84, 110, 122)',
   C700: 'rgb(69, 90, 100)',
   C800: 'rgb(55, 71, 79)',
-  C900: 'rgb(38, 50, 56)',
+  C900: 'rgb(38, 50, 56)'
 };
 
-export const deepPurple = {
+var deepPurple = exports.deepPurple = {
   C50: 'rgb(237, 231, 246)',
   C100: 'rgb(209, 196, 233)',
   C200: 'rgb(179, 157, 219)',
@@ -29,10 +32,10 @@ export const deepPurple = {
   A100: 'rgb(179, 136, 255)',
   A200: 'rgb(124, 77, 255)',
   A400: 'rgb(101, 31, 255)',
-  A700: 'rgb(98, 0, 234)',
+  A700: 'rgb(98, 0, 234)'
 };
 
-export const grey = {
+var grey = exports.grey = {
   C50: 'rgb(250, 250, 250)',
   C100: 'rgb(245, 245, 245)',
   C200: 'rgb(238, 238, 238)',
@@ -42,10 +45,10 @@ export const grey = {
   C600: 'rgb(117, 117, 117)',
   C700: 'rgb(97, 97, 97)',
   C800: 'rgb(66, 66, 66)',
-  C900: 'rgb(33, 33, 33)',
+  C900: 'rgb(33, 33, 33)'
 };
 
-export const indigo = {
+var indigo = exports.indigo = {
   C50: 'rgb(232, 234, 246)',
   C100: 'rgb(197, 202, 233)',
   C200: 'rgb(159, 168, 218)',
@@ -59,10 +62,10 @@ export const indigo = {
   A100: 'rgb(140, 158, 255)',
   A200: 'rgb(83, 109, 254)',
   A400: 'rgb(61, 90, 254)',
-  A700: 'rgb(48, 79, 254)',
+  A700: 'rgb(48, 79, 254)'
 };
 
-export const pink = { // eslint-disable-line no-unused-vars
+var pink = exports.pink = { // eslint-disable-line no-unused-vars
   C50: 'rgb(252, 228, 236)',
   C100: 'rgb(248, 187, 208)',
   C200: 'rgb(244, 143, 177)',
@@ -76,10 +79,10 @@ export const pink = { // eslint-disable-line no-unused-vars
   A100: 'rgb(255, 128, 171)',
   A200: 'rgb(255, 64, 129)',
   A400: 'rgb(245, 0, 87)',
-  A700: 'rgb(197, 17, 98)',
+  A700: 'rgb(197, 17, 98)'
 };
 
-export const red = {
+var red = exports.red = {
   C50: 'rgb(255, 235, 238)',
   C100: 'rgb(255, 205, 210)',
   C200: 'rgb(239, 154, 154)',
@@ -93,19 +96,33 @@ export const red = {
   A100: 'rgb(255, 138, 128)',
   A200: 'rgb(255, 82, 82)',
   A400: 'rgb(255, 23, 68)',
-  A700: 'rgb(213, 0, 0)',
+  A700: 'rgb(213, 0, 0)'
 };
 
-export const white = 'rgb(255, 255, 255)';
+var white = exports.white = 'rgb(255, 255, 255)';
 
-const palette = {
-  accent: () => pink.A200,
-  accentContrast: () => palette.darkContrast(),
-  darkContrast: () => white,
-  lightContrast: () => black,
-  primary: () => indigo.C500,
-  primaryContrast: () => palette.darkContrast(),
-  primaryDark: () => indigo.C700,
+var palette = {
+  accent: function accent() {
+    return pink.A200;
+  },
+  accentContrast: function accentContrast() {
+    return palette.darkContrast();
+  },
+  darkContrast: function darkContrast() {
+    return white;
+  },
+  lightContrast: function lightContrast() {
+    return black;
+  },
+  primary: function primary() {
+    return indigo.C500;
+  },
+  primaryContrast: function primaryContrast() {
+    return palette.darkContrast();
+  },
+  primaryDark: function primaryDark() {
+    return indigo.C700;
+  }
 };
 
-export default palette;
+exports.default = palette;

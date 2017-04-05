@@ -1,28 +1,27 @@
-// @flow
+'use strict';
 
-import { typo } from '../theme';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.colorContrast = colorContrast;
+exports.font = font;
+exports.textAlign = textAlign;
 
-type Alignment =
-  | 'center'
-  | 'left'
-  | 'right';
+var _theme = require('../theme');
 
-export function colorContrast(useColorContrast: boolean) {
-  if (!useColorContrast) { return ''; }
-  return `
-    opacity: 0.87;
-  `;
+function colorContrast(useColorContrast) {
+  if (!useColorContrast) {
+    return '';
+  }
+  return '\n    opacity: 0.87;\n  ';
 }
 
-export function font(usePreferred: boolean) {
-  return `
-    font-family: ${usePreferred ? typo.preferredFont : typo.performanceFont};
-  `;
+function font(usePreferred) {
+  return '\n    font-family: ' + (usePreferred ? _theme.typo.preferredFont : _theme.typo.performanceFont) + ';\n  ';
 }
 
-export function textAlign(alignment: Alignment = 'left') {
-  return `
-    text-align: ${alignment};
-  `;
-}
+function textAlign() {
+  var alignment = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'left';
 
+  return '\n    text-align: ' + alignment + ';\n  ';
+}

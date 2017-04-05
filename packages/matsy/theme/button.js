@@ -1,39 +1,54 @@
-// @flow
+'use strict';
 
-import colors, { black, grey } from './colors';
-import { alpha } from './utils';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const button = {
-  activeColor: alpha(grey.C500, 0.4),
-  activeColorAlt: colors.primary(),
+var _colors = require('./colors');
+
+var _colors2 = _interopRequireDefault(_colors);
+
+var _utils = require('./utils');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var button = {
+  activeColor: (0, _utils.alpha)(_colors.grey.C500, 0.4),
+  activeColorAlt: _colors2.default.primary(),
   borderRadius: '2px',
-  fabActiveColorAlt: colors.accent(),
-  fabColorAlt: colors.accent(),
+  fabActiveColorAlt: _colors2.default.accent(),
+  fabColorAlt: _colors2.default.accent(),
   fabFontSize: '24px',
-  fabHoverColorAlt: colors.accent(),
-  fabRippleColorAlt: colors.accentContrast(),
+  fabHoverColorAlt: _colors2.default.accent(),
+  fabRippleColorAlt: _colors2.default.accentContrast(),
   fabSize: '56px',
   fabSizeMini: '40px',
-  fabTextColorAlt: colors.accentContrast(),
-  focusColor: alpha(black, 0.12),
-  focusColorAlt: () => button.focusColor,
+  fabTextColorAlt: _colors2.default.accentContrast(),
+  focusColor: (0, _utils.alpha)(_colors.black, 0.12),
+  focusColorAlt: function focusColorAlt() {
+    return button.focusColor;
+  },
   height: '36px',
-  hoverColor: () => button.primaryColor,
-  hoverColorAlt: colors.primary(),
-  iconColor: grey.C700,
-  iconFocusColor: () => button.focusColor,
+  hoverColor: function hoverColor() {
+    return button.primaryColor;
+  },
+  hoverColorAlt: _colors2.default.primary(),
+  iconColor: _colors.grey.C700,
+  iconFocusColor: function iconFocusColor() {
+    return button.focusColor;
+  },
   iconSize: '32px',
   iconSizeMin: '24px',
   margin: '4px',
   minWidth: '64px',
   padding: '16px',
-  primaryColor: alpha(grey.C500, 0.2),
-  primaryColorAlt: colors.primary(),
-  primaryColorDisabled: alpha(black, 0.12),
-  rippleColorAlt: colors.primaryContrast(),
-  secondaryColor: black,
-  secondaryColorAlt: colors.primaryContrast(),
-  secondaryColorDisabled: alpha(black, 0.26),
+  primaryColor: (0, _utils.alpha)(_colors.grey.C500, 0.2),
+  primaryColorAlt: _colors2.default.primary(),
+  primaryColorDisabled: (0, _utils.alpha)(_colors.black, 0.12),
+  rippleColorAlt: _colors2.default.primaryContrast(),
+  secondaryColor: _colors.black,
+  secondaryColorAlt: _colors2.default.primaryContrast(),
+  secondaryColorDisabled: (0, _utils.alpha)(_colors.black, 0.26)
 };
 
-export default button;
+exports.default = button;

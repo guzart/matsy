@@ -1,24 +1,35 @@
-// @flow
+'use strict';
 
-import { css } from 'styled-components';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-import { button as t } from '../theme';
-import type { ButtonStyleProps } from './types';
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
 
-export function colored() {
-  return (props: ButtonStyleProps) => {
-    if (!props.colored) { return ''; }
-    return css`
-      color: ${t.primaryColorAlt};
-      &:focus:not(:active) {
-        background-color: ${t.focusColorAlt};
-      }
-    `;
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n      color: ', ';\n      &:focus:not(:active) {\n        background-color: ', ';\n      }\n    '], ['\n      color: ', ';\n      &:focus:not(:active) {\n        background-color: ', ';\n      }\n    ']);
+
+exports.colored = colored;
+exports.submitType = submitType;
+
+var _styledComponents = require('styled-components');
+
+var _theme = require('../theme');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function colored() {
+  return function (props) {
+    if (!props.colored) {
+      return '';
+    }
+    return (0, _styledComponents.css)(_templateObject, _theme.button.primaryColorAlt, _theme.button.focusColorAlt);
   };
 }
 
-export function submitType() {
-  return (props: ButtonStyleProps) => {
+function submitType() {
+  return function (props) {
     if (props.type === 'submit') {
       return '-webkit-appearance:none;';
     }

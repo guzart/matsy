@@ -1,7 +1,10 @@
-// @flow
+'use strict';
 
-const bar = {
-  height: '4px',
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var bar = {
+  height: '4px'
 };
 
-export default bar;
+exports.default = bar;

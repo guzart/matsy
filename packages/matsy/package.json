@@ -3,16 +3,14 @@
   "version": "0.1.0",
   "description": "Material design React components using styled-components",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guzart/matsy.git"
   },
   "keywords": [
-    "material-design",
     "react",
+    "react-components",
+    "material-design",
     "styled-components"
   ],
   "author": "Arturo Guzman",
@@ -20,5 +18,17 @@
   "bugs": {
     "url": "https://github.com/guzart/matsy/issues"
   },
-  "homepage": "https://github.com/guzart/matsy#readme"
+  "homepage": "https://github.com/guzart/matsy#readme",
+  "dependencies": {
+    "babel-runtime": "^6.23.0"
+  },
+  "peerDependencies": {
+    "react": "^15.4",
+    "react-dom": "^15.4",
+    "styled-components": "^1.4"
+  },
+  "devDependencies": {
+    "react": "^15.4",
+    "styled-components": "^1.4.4"
+  }
 }

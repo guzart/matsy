@@ -1,9 +1,12 @@
-// @flow
+"use strict";
 
-const typo = {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var typo = {
   performanceFont: "'Helvetica', 'Arial', sans-serif",
   preferredFont: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-  usePreferred: true,
+  usePreferred: true
 };
 
-export default typo;
+exports.default = typo;

@@ -1,7 +1,11 @@
-// @flow
+'use strict';
 
-export function alpha(color: string, channel: number) {
-  return color.replace(/^rgb/, 'rgba').replace(/\)$/, `, ${channel})`);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.alpha = alpha;
+function alpha(color, channel) {
+  return color.replace(/^rgb/, 'rgba').replace(/\)$/, ', ' + channel + ')');
 }
 
-export default alpha;
+exports.default = alpha;

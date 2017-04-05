@@ -1,16 +1,34 @@
-// @flow
+'use strict';
 
-import { css } from 'styled-components';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-import { input as t } from '../theme';
-import type {
-  InputProps,
-  LabelProps,
-  TextfieldProps,
-} from './types';
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
 
-export function alignment() {
-  return (props: TextfieldProps) => {
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n        min-height: ', ';\n        min-width: ', ';\n        width: auto;\n      '], ['\n        min-height: ', ';\n        min-width: ', ';\n        width: auto;\n      ']),
+    _templateObject2 = (0, _taggedTemplateLiteral3.default)(['\n      background-color: transparent;\n      border-bottom: 1px dotted ', ';\n      color: ', ';\n    '], ['\n      background-color: transparent;\n      border-bottom: 1px dotted ', ';\n      color: ', ';\n    ']),
+    _templateObject3 = (0, _taggedTemplateLiteral3.default)(['\n      border-color: ', ';\n      box-shadow: none;\n    '], ['\n      border-color: ', ';\n      box-shadow: none;\n    ']),
+    _templateObject4 = (0, _taggedTemplateLiteral3.default)(['\n    &:after {\n      left: 0;\n      visibility: visible;\n      width: 100%;\n    }\n  '], ['\n    &:after {\n      left: 0;\n      visibility: visible;\n      width: 100%;\n    }\n  ']);
+
+exports.alignment = alignment;
+exports.width = width;
+exports.isInputDisabled = isInputDisabled;
+exports.isInputInvalid = isInputInvalid;
+exports.isInputFocused = isInputFocused;
+exports.isLabelDirty = isLabelDirty;
+exports.isLabelFocused = isLabelFocused;
+
+var _styledComponents = require('styled-components');
+
+var _theme = require('../theme');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function alignment() {
+  return function (props) {
     if (props.align === 'right') {
       return 'text-align: right';
     }
@@ -19,16 +37,12 @@ export function alignment() {
   };
 }
 
-export function width() {
-  return (props: TextfieldProps) => {
+function width() {
+  return function (props) {
     if (props.width === 'full') {
       return 'width: 100%';
     } else if (props.width === 'expandable') {
-      return css`
-        min-height: ${t.textButtonSize};
-        min-width: ${t.textButtonSize};
-        width: auto;
-      `;
+      return (0, _styledComponents.css)(_templateObject, _theme.input.textButtonSize, _theme.input.textButtonSize);
     }
 
     return '';
@@ -37,48 +51,45 @@ export function width() {
 
 // INPUT
 
-export function isInputDisabled() {
-  return (props: InputProps) => {
-    if (!props.isDisabled) { return ''; }
-    return css`
-      background-color: transparent;
-      border-bottom: 1px dotted ${t.textDisabledColor()};
-      color: ${t.textDisabledTextColor()};
-    `;
+function isInputDisabled() {
+  return function (props) {
+    if (!props.isDisabled) {
+      return '';
+    }
+    return (0, _styledComponents.css)(_templateObject2, _theme.input.textDisabledColor(), _theme.input.textDisabledTextColor());
   };
 }
 
-export function isInputInvalid() {
-  return (props: InputProps) => {
-    if (!props.isInvalid) { return ''; }
-    return css`
-      border-color: ${t.textErrorColor};
-      box-shadow: none;
-    `;
+function isInputInvalid() {
+  return function (props) {
+    if (!props.isInvalid) {
+      return '';
+    }
+    return (0, _styledComponents.css)(_templateObject3, _theme.input.textErrorColor);
   };
 }
 
-export function isInputFocused() {
-  return (props: InputProps) => {
-    if (!props.isFocused) { return ''; }
+function isInputFocused() {
+  return function (props) {
+    if (!props.isFocused) {
+      return '';
+    }
     return 'outline: none;';
   };
 }
 
 // LABEL
 
-export function isLabelDirty(props: LabelProps) {
-  if (props.isDirty) { return 'visibility: none;'; }
+function isLabelDirty(props) {
+  if (props.isDirty) {
+    return 'visibility: none;';
+  }
   return '';
 }
 
-export function isLabelFocused(props: LabelProps) {
-  if (!props.isFocused) { return ''; }
-  return css`
-    &:after {
-      left: 0;
-      visibility: visible;
-      width: 100%;
-    }
-  `;
+function isLabelFocused(props) {
+  if (!props.isFocused) {
+    return '';
+  }
+  return (0, _styledComponents.css)(_templateObject4);
 }
