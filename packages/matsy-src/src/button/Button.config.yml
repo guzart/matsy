@@ -1,0 +1,10 @@
+---
+
+title: Button
+
+collated: true
+
+variants:
+  - name: default
+    context:
+      children: Default

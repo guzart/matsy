@@ -1,0 +1,10 @@
+import React from 'react';
+import Button from 'matsy/button/Button';
+
+export default function ButtonExample(props) {
+  return (
+    <Button>
+      {props.children}
+    </Button>
+  );
+}
