@@ -7,7 +7,7 @@ import type {
   InputProps,
   LabelProps,
   TextfieldProps,
-} from './types';
+} from './types.js.flow';
 
 export function alignment() {
   return (props: TextfieldProps) => {

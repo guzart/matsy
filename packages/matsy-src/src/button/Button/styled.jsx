@@ -2,9 +2,9 @@
 
 import styled from 'styled-components';
 
-import { typoButton } from '../mixins';
-import { animation, button as t } from '../theme';
-import { colored, submitType } from './utils';
+import { typoButton } from '../../mixins';
+import { animation, button as t } from '../../theme';
+import { colored, disabled, raised, raisedAndColored } from '../utils';
 
 const Button = styled.button`
   background: transparent;
@@ -46,8 +46,10 @@ const Button = styled.button`
   }
 
   ${props => typoButton(props.contrast)}
-  ${colored()}
-  ${submitType()}
+  ${props => colored(props)}
+  ${props => raised(props)}
+  ${props => raisedAndColored(props)}
+  ${props => disabled(props)}
 `;
 
 export default Button;

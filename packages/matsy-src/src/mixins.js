@@ -3,21 +3,25 @@
 import { css } from 'styled-components';
 import { animation, typo } from './theme';
 
-export function materialAnimationDefault(duration: string = '0.2s') {
+function focusShadow() {
+  return 'box-shadow: 0 0 8px rgba(0, 0, 0, .18), 0 8px 16px rgba(0, 0, 0, .36);';
+}
+
+function materialAnimationDefault(duration: string = '0.2s') {
   return css`
     transition-duration: ${duration};
     transition-timing-function: ${animation.curveDefault};
   `;
 }
 
-export function typoPreferredFont(usePreferred: boolean = true) {
+function typoPreferredFont(usePreferred: boolean = true) {
   if (!usePreferred) { return ''; }
   return css`
     font-family: ${typo.preferredFont};
   `;
 }
 
-export function typoButton(contrast: boolean = false, usePreferred: boolean = true) {
+function typoButton(contrast: boolean = false, usePreferred: boolean = true) {
   const contrastStyle = contrast ? 'opacity: 0.87;' : '';
   return css`
     font-size: 14px;
@@ -30,3 +34,5 @@ export function typoButton(contrast: boolean = false, usePreferred: boolean = tr
     ${contrastStyle}
   `;
 }
+
+export { focusShadow, materialAnimationDefault, typoPreferredFont, typoButton };

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { input as t } from '../../theme';
 import { alignment, width } from '../utils';
 
-const TextfieldStyle = styled.div`
+const TextfieldStyled = styled.div`
   box-sizing: border-box;
   display: inline-block;
   font-size: ${t.textFontSize};
@@ -24,4 +24,4 @@ const TextfieldStyle = styled.div`
 //   top: $input-text-expandable-icon-top;
 // }
 
-export default TextfieldStyle;
+export default TextfieldStyled;

@@ -4,7 +4,7 @@ import React from 'react';
 
 import TextfieldInput from '../Input';
 import TextfieldLabel from '../Label';
-import TextfieldStyle from './Styled';
+import TextfieldStyled from './Styled';
 
 const noop = () => {};
 
@@ -52,7 +52,7 @@ class Textfield extends React.Component {
     const { isFocused } = this.state;
 
     return (
-      <TextfieldStyle>
+      <TextfieldStyled>
         <TextfieldInput
           {...other}
           id={id}
@@ -64,7 +64,7 @@ class Textfield extends React.Component {
           htmlFor={id}
           isFocused={isFocused}
         >{label}</TextfieldLabel>
-      </TextfieldStyle>
+      </TextfieldStyled>
     );
   }
 }

@@ -1,7 +1,9 @@
 // @flow
 
 export type ButtonStyleProps = {
-  colored: boolean,
-  type: 'button' | 'submit',
+  accent?: boolean,
+  colored?: boolean,
+  raised?: boolean,
+  type?: 'button' | 'submit',
 };
 
