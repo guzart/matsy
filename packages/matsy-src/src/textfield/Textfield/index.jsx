@@ -4,7 +4,7 @@ import React from 'react';
 
 import TextfieldInput from '../Input';
 import TextfieldLabel from '../Label';
-import TextfieldStyled from './Styled';
+import TextfieldStyled from './styled';
 
 const noop = () => {};
 

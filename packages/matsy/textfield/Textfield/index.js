@@ -44,9 +44,9 @@ var _Label = require('../Label');
 
 var _Label2 = _interopRequireDefault(_Label);
 
-var _Styled = require('./Styled');
+var _styled = require('./styled');
 
-var _Styled2 = _interopRequireDefault(_Styled);
+var _styled2 = _interopRequireDefault(_styled);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -102,7 +102,7 @@ var Textfield = function (_React$Component) {
 
 
       return _react2.default.createElement(
-        _Styled2.default,
+        _styled2.default,
         null,
         _react2.default.createElement(_Input2.default, (0, _extends3.default)({}, other, {
           id: id,
