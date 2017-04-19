@@ -1,8 +1,7 @@
-// @flow
-
 const gulp = require('gulp');
-const babel = require('gulp-babel');
 const path = require('path');
+const ts = require('gulp-typescript');
+const tsProject = ts.createProject('tsconfig.json');
 const fractal = require('./fractal');
 
 const paths = {
@@ -11,19 +10,9 @@ const paths = {
 };
 
 gulp.task('build:js', () =>
-  gulp.src([`${paths.src}/**/*.@(js|jsx)`])
-      .pipe(babel({
-        babelrc: false,
-        ignore: ['node_modules/*'],
-        presets: [['env', { targets: { browsers: ['last 2 versions'] } }], 'react'],
-        plugins: [
-          'transform-flow-strip-types',
-          'transform-class-properties',
-          'transform-object-rest-spread',
-          'transform-runtime'
-        ]
-      }))
-      .pipe(gulp.dest(paths.dest))
+  tsProject.src()
+    .pipe(tsProject())
+    .js.pipe(gulp.dest(paths.dest))
 );
 
 gulp.task('build:docs', ['build:js'], () => {
@@ -39,7 +28,7 @@ gulp.task('build:docs', ['build:js'], () => {
 gulp.task('build', ['build:js', 'build:docs']);
 
 gulp.task('dev:build', ['build:js']);
-gulp.task('dev:matsy', () => gulp.watch(`${paths.src}/**/*.@(js|jsx)`, ['dev:build']));
+gulp.task('dev:matsy', () => gulp.watch(`${paths.src}/**/*.@(ts|tsx)`, ['dev:build']));
 gulp.task('dev:fractal', ['dev:build'], () => fractal.cli.exec('start --sync'));
 
 gulp.task('dev', ['dev:build', 'dev:matsy', 'dev:fractal']);

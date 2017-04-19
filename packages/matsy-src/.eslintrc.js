@@ -3,7 +3,6 @@ module.exports = {
     'airbnb/legacy',
     'plugin:import/errors'
   ],
-  parser: 'babel-eslint',
   rules: {
     'import/no-extraneous-dependencies': ['error',
       { devDependencies: true }

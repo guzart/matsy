@@ -1,38 +1,13 @@
-// @flow
-
 /* eslint-disable react/no-danger, react/jsx-filename-extension */
 
 import React from 'react';
-
-// import 'matsy/styles/global.scss';
-
-// Path helper for assets
-// import path from 'path';
-// import get from 'lodash/get';
-// import { utils } from '@frctl/fractal';
-// function renderLinkStylesheets(props) {
-//   const builderUrls = props.fractal.web.get('builder.urls');
-//   const filePath = props.filePath;
-//
-//   const publicPath = path.resolve(path.dirname(filePath), '../../public');
-//   const result = glob.sync(path.join(publicPath, '**/*.css'));
-//   return result
-//     .map(f => path.relative(publicPath, f))
-//     .map(f => utils.relUrlPath(f, get(props, 'meta.env.request.path', '/'), builderUrls))
-//     .map(f => <link rel="stylesheet" href={f} key={f} />);
-// }
-
-type Props = {
-  style: string,
-  yield: string,
-};
 
 function renderStyle(style) {
   if (!style) { return null; }
   return <style dangerouslySetInnerHTML={{ __html: style }} />;
 }
 
-function PreviewTemplate(props: Props) {
+function PreviewTemplate(props) {
   return (
     <html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#" className="no-js fonts-loaded">
       <head>

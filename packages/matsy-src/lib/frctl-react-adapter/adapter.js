@@ -1,35 +1,40 @@
-const babel = require('babel-core');
+// const babel = require('babel-core');
 const debug = require('debug')('matsy:frctl-react-adapter');
 const Adapter = require('@frctl/fractal').Adapter;
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const ts = require('typescript');
 const vm = require('vm');
 
 const { cleanFilepath } = require('./utils');
-
-const babelOptions = {
-  babelrc: false,
-  // plugins: [
-  //   [require.resolve('babel-plugin-styled-components'), { ssr: true }]
-  // ],
-  presets: [
-    require.resolve('babel-preset-env'),
-    require.resolve('babel-preset-react')
-  ]
-};
+const compilerOptions = ts.parseJsonConfigFileContent({
+  compilerOptions: {
+    allowJs: true,
+    jsx: 'react',
+    module: 'commonjs',
+    moduleResolution: 'node',
+    target: 'ES5'
+  }
+}, ts.sys, '../tsconfig.js');
 
 function compile(code) {
-  // after first compilation, require will be hooked to use babel
-  // because it is shared with the vm
-  const result = babel.transform(code, babelOptions);
-  return result.code;
+  const result = ts.transpileModule(code, { filename: 'input.jsx', compilerOptions: compilerOptions.options });
+  return result.outputText;
 }
 
 function getSandbox() {
   return {
     exports: {},
-    process: { env: { BABEL_DISABLE_CACHE: 1, NODE_ENV: 'production' } },
-    require,
+    process: { env: { NODE_ENV: 'production' } },
+    // fixes interop between nodejs and typescript default imports
+    require: (name) => {
+      var mod = require(name); // eslint-disable-line
+      if (mod.default) {
+        return mod;
+      }
+
+      return { default: mod };
+    },
     window: { navigator: { userAgent: 'Node' } }
   };
 }

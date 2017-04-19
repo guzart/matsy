@@ -1,5 +1,3 @@
-// @flow
-
 const path = require('path');
 
 // change the mount point of the theme, so that it's compatible with github pages
