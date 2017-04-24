@@ -1,5 +1,6 @@
 import { css } from 'styled-components';
-import { animation, typo } from './theme';
+import animation from 'matsy/theme/animation';
+import typo from 'matsy/typography/theme';
 
 function focusShadow() {
   return 'box-shadow: 0 0 8px rgba(0, 0, 0, .18), 0 8px 16px rgba(0, 0, 0, .36);';

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { input as t } from 'matsy/theme';
+import t from 'matsy/textfield/theme';
 
 const Button = styled.div`
   position: absolute;

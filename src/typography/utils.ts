@@ -1,4 +1,4 @@
-import { typo } from 'matsy/theme';
+import typo from './theme';
 
 type Alignment =
   | 'center'

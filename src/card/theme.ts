@@ -1,5 +1,6 @@
-import palette, { black, white } from './colors';
-import { alpha } from './utils';
+import { black, white } from 'matsy/theme/colors';
+import palette from 'matsy/theme/palette';
+import { alpha } from 'matsy/theme/utils';
 
 const card = {
   actionsFontSize: '16px',

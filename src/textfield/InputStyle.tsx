@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-import { input as t, typo } from 'matsy/theme';
+import typo from 'matsy/typography/theme';
+
+import t from './theme';
 
 import { isInputDisabled, isInputFocused, isInputInvalid } from './utils';
 

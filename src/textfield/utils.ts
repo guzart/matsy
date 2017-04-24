@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-import { input as t } from 'matsy/theme';
+import t from './theme';
 
 interface TextfieldProps {
   align?: 'right' | 'left',

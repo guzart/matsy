@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { input as t } from 'matsy/theme';
+import t from '../theme';
 import { alignment, width } from '../utils';
 
 const TextfieldStyled = styled.div`

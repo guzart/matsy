@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { card as t } from 'matsy/theme';
+import t from './theme';
 
 export interface Props {
   border?: boolean,

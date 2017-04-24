@@ -1,23 +1,24 @@
-import colors, { black, grey } from './colors';
-import { alpha } from './utils';
+import { black, grey } from 'matsy/theme/colors';
+import palette from 'matsy/theme/palette';
+import { alpha } from 'matsy/theme/utils';
 
 const button = {
   activeColor: alpha(grey.C500, 0.4),
-  activeColorAlt: colors.primary(),
+  activeColorAlt: palette.primary(),
   borderRadius: '2px',
-  fabActiveColorAlt: colors.accent(),
-  fabColorAlt: colors.accent(),
+  fabActiveColorAlt: palette.accent(),
+  fabColorAlt: palette.accent(),
   fabFontSize: '24px',
-  fabHoverColorAlt: colors.accent(),
-  fabRippleColorAlt: colors.accentContrast(),
+  fabHoverColorAlt: palette.accent(),
+  fabRippleColorAlt: palette.accentContrast(),
   fabSize: '56px',
   fabSizeMini: '40px',
-  fabTextColorAlt: colors.accentContrast(),
+  fabTextColorAlt: palette.accentContrast(),
   focusColor: alpha(black, 0.12),
   focusColorAlt: () => button.focusColor,
   height: '36px',
   hoverColor: () => button.primaryColor,
-  hoverColorAlt: colors.primary(),
+  hoverColorAlt: palette.primary(),
   iconColor: grey.C700,
   iconFocusColor: () => button.focusColor,
   iconSize: '32px',
@@ -26,11 +27,11 @@ const button = {
   minWidth: '64px',
   padding: '16px',
   primaryColor: alpha(grey.C500, 0.2),
-  primaryColorAlt: colors.primary(),
+  primaryColorAlt: palette.primary(),
   primaryColorDisabled: alpha(black, 0.12),
-  rippleColorAlt: colors.primaryContrast(),
+  rippleColorAlt: palette.primaryContrast(),
   secondaryColor: black,
-  secondaryColorAlt: colors.primaryContrast(),
+  secondaryColorAlt: palette.primaryContrast(),
   secondaryColorDisabled: alpha(black, 0.26),
 };
 

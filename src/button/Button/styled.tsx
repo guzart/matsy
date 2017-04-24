@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 import { typoButton } from 'matsy/mixins';
-import { animation, button as t } from 'matsy/theme';
+import animation from 'matsy/theme/animation';
+
+import t from '../theme';
 import { colored, disabled, raised, raisedAndColored, ButtonStyleProps } from '../utils';
 
 export type Props = ButtonStyleProps;

@@ -1,5 +1,6 @@
-import palette, { black, red } from './colors';
-import { alpha } from './utils';
+import { black, red } from 'matsy/theme/colors';
+import palette from 'matsy/theme/palette';
+import { alpha } from 'matsy/theme/utils';
 
 const input = {
   textBackgroundColor: 'transparent',

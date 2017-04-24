@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 import { materialAnimationDefault } from 'matsy/mixins';
-import { input as t } from 'matsy/theme';
+import t from 'matsy/textfield/theme';
+
 import { isLabelDirty, isLabelFocused } from './utils';
 
 const TextfieldLabel = styled.label`
