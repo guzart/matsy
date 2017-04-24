@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { card as t } from '../../theme';
-import shadow, { ShadowLevel } from '../../shadow';
+import { card as t } from 'matsy/theme';
+import shadow, { ShadowLevel } from 'matsy/shadow';
 
 interface Props {
   shadow: ShadowLevel,

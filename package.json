@@ -45,7 +45,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "styled-components": "2.0.0-15",
-    "typescript": "^2.2.2"
+    "typescript": "^2.3.0"
   },
   "peerDependencies": {
     "react": "^15.4.2",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Textfield from '../../../src/matty/textfield/Textfield';
+import Textfield from './Textfield';
 
 describe('Textfield', () => {
   let props;

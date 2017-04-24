@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Heading from '../typography/Heading';
-import { card as t } from '../theme';
+import Heading from 'matsy/typography/Heading';
+import { card as t } from 'matsy/theme';
 
 const CardTitleText = styled(Heading)`
   align-self: flex-end;

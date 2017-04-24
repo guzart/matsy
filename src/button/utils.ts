@@ -1,8 +1,8 @@
 import { css } from 'styled-components';
 
-import { button as t } from '../theme';
-import shadow from '../shadow';
-import { focusShadow } from '../mixins';
+import { button as t } from 'matsy/theme';
+import shadow from 'matsy/shadow';
+import { focusShadow } from 'matsy/mixins';
 
 export interface ButtonStyleProps {
   accent?: boolean,
