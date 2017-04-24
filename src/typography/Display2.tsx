@@ -1,8 +1,17 @@
+import * as React from 'react';
 import styled from 'styled-components';
 
 import Base from './Base';
+import { colorContrastHigh } from './utils'
 
-export default styled(Base)`
-  margin-bottom: 24px;
-  margin-top: 24px;
+function Display2(props: any) {
+  return <Base priority={3} {...props} />;
+}
+
+export default styled(Display2)`
+  ${props => colorContrastHigh(props.colorContrast)}
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 48px;
 `;
+

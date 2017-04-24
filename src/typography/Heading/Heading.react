@@ -1,0 +1,11 @@
+import React from 'react';
+import Heading from 'matsy/typography/Heading';
+
+export default function HeadingExample(props) {
+  return (
+    <Heading
+      colorContrast={props.colorContrast}
+      priority={props.priority}
+    >{props.children}</Heading>
+  );
+}

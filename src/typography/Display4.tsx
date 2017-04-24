@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import Base from './Base';
 import { colorContrastHigh } from './utils'
 
-function Display1(props: any) {
-  return <Base priority={4} {...props} />;
+function Display4(props: any) {
+  return <Base priority={1} {...props} />;
 }
 
-export default styled(Display1)`
+export default styled(Display4)`
   ${props => colorContrastHigh(props.colorContrast)}
-  font-size: 34px;
-  font-weight: 400;
-  line-height: 40px;
+  font-size: 112px;
+  font-weight: 300;
+  letter-spacing: -.04em;
+  line-height: 1;
 `;

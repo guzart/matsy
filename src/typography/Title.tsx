@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Base from './Base';
 
 export default styled(Base)`
-  margin-bottom: 16px;
-  margin-top: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  line-height: 1;
 `;

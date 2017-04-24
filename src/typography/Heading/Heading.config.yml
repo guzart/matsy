@@ -1,0 +1,37 @@
+---
+
+title: Heading
+
+collated: false
+
+variants:
+  - name: default
+    context:
+      children: "h1 Heading"
+      colorContrast: true
+      priority: 1
+
+  - name: "heading 2"
+    context:
+      children: "h2 Heading"
+      priority: 2
+
+  - name: "heading 3"
+    context:
+      children: "h3 Heading"
+      priority: 3
+
+  - name: "heding 4"
+    context:
+      children: "h4 Heading"
+      priority: 4
+
+  - name: "heading 5"
+    context:
+      children: "h5 Heading"
+      priority: 5
+
+  - name: "heading 6"
+    context:
+      children: "h6 Heading"
+      priority: 6
