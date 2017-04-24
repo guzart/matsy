@@ -15,8 +15,8 @@ const reactAdapter = require('./lib/frctl-react-adapter');
 
 const paths = {
   components: path.resolve(__dirname, './src'),
-  dest: path.resolve(__dirname, '../../docs'),
-  docs: path.resolve(__dirname, './docs'),
+  dest: path.resolve(__dirname, './docs'),
+  docs: path.resolve(__dirname, './fractal-docs'),
   static: path.resolve(__dirname, './public')
 };
 

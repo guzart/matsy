@@ -1,12 +1,11 @@
 module.exports = {
-  extends: 'airbnb-base/legacy',
-  parser: 'babel-eslint',
+  extends: [
+    'airbnb/legacy',
+    'plugin:import/errors'
+  ],
   rules: {
     'import/no-extraneous-dependencies': ['error',
       { devDependencies: true }
     ],
   },
-  globals: {
-    Promise: true,
-  }
 };
