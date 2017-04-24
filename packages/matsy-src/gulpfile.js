@@ -5,7 +5,7 @@ const tsProject = ts.createProject('tsconfig.json');
 const fractal = require('./fractal');
 
 const paths = {
-  dest: path.resolve('../matsy'),
+  dest: path.resolve('./dist'),
   src: path.resolve('./src')
 };
 

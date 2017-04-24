@@ -1,8 +1,10 @@
-// const babel = require('babel-core');
 const debug = require('debug')('matsy:frctl-react-adapter');
 const Adapter = require('@frctl/fractal').Adapter;
+const moduleAlias = require('module-alias');
+const path = require('path');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const styledComponents = require('styled-components');
 const ts = require('typescript');
 const vm = require('vm');
 
@@ -17,9 +19,13 @@ const compilerOptions = ts.parseJsonConfigFileContent({
   }
 }, ts.sys, '../tsconfig.js');
 
+moduleAlias.addAliases({
+  matsy: path.resolve(__dirname, '../../dist')
+});
+moduleAlias();
+
 function compile(code) {
-  const result = ts.transpileModule(code, { filename: 'input.jsx', compilerOptions: compilerOptions.options });
-  return result.outputText;
+  return ts.transpile(code, compilerOptions.options, 'input.jsx');
 }
 
 function getSandbox() {
@@ -40,7 +46,7 @@ function getSandbox() {
 }
 
 function clearRequireCache() {
-  debug(Object.keys(require.cache).filter(id => !/node_modules/.test(id)));
+  debug('CLEAR CACHE', Object.keys(require.cache).filter(id => !/node_modules/.test(id)));
   Object.keys(require.cache)
     .filter(id => /packages\/matsy\/(?!node_modules)/.test(id))
     .forEach(id => delete require.cache[id]);
@@ -76,9 +82,11 @@ class ReactAdapter extends Adapter {
         tplContext
       );
 
-      const element = React.createElement(Component, props);
+      const sheet = new styledComponents.ServerStyleSheet();
+      const element = sheet.collectStyles(React.createElement(Component, props));
       const html = ReactDOMServer.renderToStaticMarkup(element);
-      return Promise.resolve(html);
+      const css = sheet.getStyleTags();
+      return Promise.resolve(`${css}\n${html}`);
     } catch (error) {
       debug(error);
       return Promise.reject(error.message);

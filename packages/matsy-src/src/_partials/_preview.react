@@ -2,11 +2,6 @@
 
 import React from 'react';
 
-function renderStyle(style) {
-  if (!style) { return null; }
-  return <style dangerouslySetInnerHTML={{ __html: style }} />;
-}
-
 function PreviewTemplate(props) {
   return (
     <html lang="en" dir="ltr" prefix="og: http://ogp.me/ns#" className="no-js fonts-loaded">
@@ -15,7 +10,6 @@ function PreviewTemplate(props) {
         <meta name="referrer" content="origin" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {renderStyle(props.style)}
       </head>
       <body>
         <div dangerouslySetInnerHTML={{ __html: props.yield }} />
