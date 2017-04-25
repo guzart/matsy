@@ -14,6 +14,54 @@ export interface ButtonStyleProps {
   type?: 'button' | 'submit',
 };
 
+function accentRaised(props: ButtonStyleProps) {
+  if (!props.raised) { return ''; }
+  return css`
+    background-color: ${t.fabColorAlt};
+    color: ${t.fabTextColorAlt};
+
+    &:hover {
+      background-color: ${t.fabHoverColorAlt};
+    }
+
+    &:active {
+      background-color: ${t.fabActiveColorAlt};
+    }
+
+    &:focus:not(:active) {
+      background-color: ${t.fabActiveColorAlt};
+    }
+  `;
+}
+
+export function accent(props: ButtonStyleProps) {
+  if (!props.accent) { return ''; }
+  return css`
+    color: ${t.fabColorAlt};
+    ${accentRaised}
+  `;
+}
+
+function coloredRaised(props: ButtonStyleProps) {
+  if (!props.raised) { return ''; }
+  return css`
+    background: ${t.primaryColorAlt};
+    color: ${t.secondaryColorAlt};
+
+    &:hover {
+      background-color: ${t.hoverColorAlt};
+    }
+
+    &:active {
+      background-color: ${t.activeColorAlt};
+    }
+
+    &:focus:not(:active) {
+      background-color: ${t.activeColorAlt};
+    }
+  `;
+}
+
 export function colored(props: ButtonStyleProps) {
   if (!props.colored) { return ''; }
   return css`
@@ -22,6 +70,8 @@ export function colored(props: ButtonStyleProps) {
     &:focus:not(:active) {
       background-color: ${t.focusColorAlt};
     }
+
+    ${coloredRaised}
   `;
 }
 
@@ -57,22 +107,3 @@ export function raised(props: ButtonStyleProps) {
   `;
 }
 
-export function raisedAndColored(props: ButtonStyleProps) {
-  if (!props.raised || !props.colored) { return ''; }
-  return css`
-    background: ${t.primaryColorAlt};
-    color: ${t.secondaryColorAlt};
-
-    &:hover {
-      background-color: ${t.hoverColorAlt};
-    }
-
-    &:active {
-      background-color: ${t.activeColorAlt};
-    }
-
-    &:focus:not(:active) {
-      background-color: ${t.activeColorAlt};
-    }
-  `;
-}

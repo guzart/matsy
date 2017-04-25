@@ -3,8 +3,12 @@ import Button from 'matsy/button/Button';
 
 export default function ButtonExample(props) {
   return (
-    <Button>
-      {props.children}
-    </Button>
+    <Button
+      accent={props.accent}
+      colored={props.colored}
+      contrast={props.contrast}
+      disabled={props.disabled}
+      raised={props.raised}
+    >{props.children}</Button>
   );
 }

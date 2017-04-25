@@ -4,7 +4,7 @@ import { typoButton } from 'matsy/mixins';
 import animation from 'matsy/theme/animation';
 
 import t from '../theme';
-import { colored, disabled, raised, raisedAndColored, ButtonStyleProps } from '../utils';
+import { accent, colored, disabled, raised, ButtonStyleProps } from '../utils';
 
 export type Props = ButtonStyleProps;
 
@@ -48,9 +48,9 @@ const Button = styled.button`
   }
 
   ${(props: Props) => typoButton(props.contrast)}
-  ${(props: Props) => colored(props)}
   ${(props: Props) => raised(props)}
-  ${(props: Props) => raisedAndColored(props)}
+  ${(props: Props) => colored(props)}
+  ${(props: Props) => accent(props)}
   ${(props: Props) => disabled(props)}
 `;
 

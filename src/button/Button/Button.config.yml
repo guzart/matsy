@@ -8,3 +8,36 @@ variants:
   - name: default
     context:
       children: Default
+  
+  - name: raised
+    context:
+      children: Raised
+      raised: true
+  
+  - name: colored
+    context:
+      children: Colored
+      colored: true
+
+  - name: colored raised
+    context:
+      children: Colored Raised
+      colored: true
+      raised: true
+
+  - name: accent
+    context:
+      accent: true
+      children: Accent
+
+  - name: accent raised
+    context:
+      accent: true
+      children: Accent Raised
+      raised: true
+
+  - name: disabled
+    context:
+      children: Disabled
+      disabled: true
+  
