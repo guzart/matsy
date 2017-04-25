@@ -2,7 +2,7 @@
 
 title: Heading
 
-collated: false
+collated: true
 
 variants:
   - name: default
