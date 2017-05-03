@@ -1,9 +1,10 @@
 module.exports = {
   extends: [
-    'airbnb/legacy',
+    'airbnb',
     'plugin:import/errors'
   ],
   rules: {
+    'comma-dangle': ['error', 'never'],
     'import/no-extraneous-dependencies': ['error',
       { devDependencies: true }
     ],
