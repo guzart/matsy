@@ -8,7 +8,7 @@ import handleNode, { IOptions } from './handleNode';
 const debug = debugFactory('matsy');
 
 const decoratorTemplate = babel.template(`
-  const NAME = (Component: React.ReactType) => STYLE;
+  const NAME = (Component: any) => STYLE;
 `, { plugins: ['flow'] });
 
 function handleChildRuleDeclarations(options: IOptions, rule: postcss.Rule) {

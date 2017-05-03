@@ -45,8 +45,7 @@ const buildComponents = through.obj(function(chunk, enc, cb) {
   let output;
   function plugin(root: postcss.Root, opts: any) {
     output = babel.transform(`
-      import * as React from 'react';
-      import * as styled from 'styled-components';
+      import styled from 'styled-components';
     `, { plugins: [[babelPlugin, root]] });
   }
 
