@@ -1,6 +1,6 @@
 import * as babel from 'babel-core';
 import * as debugFactory from 'debug';
-import { titleize } from 'lodash-inflection';
+import { camelize } from 'inflection';
 import * as path from 'path';
 import * as prettier from 'prettier';
 import * as postcss from 'postcss';
@@ -11,31 +11,22 @@ const debug = debugFactory('matsy');
 const traverse = babel.traverse;
 
 interface Options {
-  isRoot: boolean;
   name: string;
   program: babel.types.Program;
   root: postcss.Root;
   t: typeof babel.types;
-  template: typeof babel.template;
 }
 
-function handleChildRule(options: Options, rule: postcss.Rule) {
-  const { program, t, template } = options;
-  const rootComponent = template(`
-    const NAME = (Component: React.ReactType) => STYLE;
-  `, { plugins: ['flow'] });
+const decoratorTemplate = babel.template(`
+  const NAME = (Component: React.ReactType) => STYLE;
+`, { plugins: ['flow'] });
 
-  const compCSS = [''];
-  rule.nodes.forEach(node => {
-    if (node.type !== 'decl') {
-      const nodeOpts = Object.assign({}, options, { isRoot: false });
-      handleNode(nodeOpts)(node);
-      return;
-    }
+function handleChildRuleDeclarations(options: Options, rule: postcss.Rule) {
+  const { program, t } = options;
 
-    const decl = <postcss.Declaration>node;
-    compCSS.push(`${decl.prop}: ${decl.value};`);
-  });
+  const declarations = rule.nodes
+    .filter(n => n.type === 'decl')
+    .map((decl: postcss.Declaration) => (`${decl.prop}: ${decl.value};`));
 
   const templateExpr = t.taggedTemplateExpression(
     t.callExpression(
@@ -43,12 +34,13 @@ function handleChildRule(options: Options, rule: postcss.Rule) {
       [t.identifier('Component')]
     ),
     t.templateLiteral(
-      [t.templateElement({ raw: compCSS.join('\n') })],
+      // TODO: improve indentation
+      [t.templateElement({ raw: '\n  ' + declarations.join('\n  ') + '\n' })],
       []
     )
   );
 
-  const componentNode = rootComponent({
+  const componentNode = decoratorTemplate({
     NAME: t.identifier(options.name),
     STYLE: templateExpr
   });
@@ -56,21 +48,39 @@ function handleChildRule(options: Options, rule: postcss.Rule) {
   program.body.push(<any>componentNode);
 }
 
-function handleRule(options: Options, rule: postcss.Rule) {
-  if (!options.isRoot) {
-    // handleChildRule(program, options, rule);
-    debug('Skipping child Rule: ', rule.selector);
-    return;
-  }
+function handleChildRule(options: Options, rule: postcss.Rule) {
+  // First add css declarations
+  handleChildRuleDeclarations(options, rule);
 
-  const name = titleize(rule.selector.replace(/\.mdc-/, ''));
-  const opts = Object.assign({}, options, { name });
-  handleChildRule(opts, rule);
-  options.program.body.push(options.t.exportDefaultDeclaration(options.t.identifier(name)));
+  // Now consider adding more components
+  const otherNodes = rule.nodes.filter(n => n.type !== 'decl');
+  const nodeOpts = Object.assign({}, options, {});
+  otherNodes.forEach(handleNode(nodeOpts));
+}
+
+function handleRule(options: Options, rule: postcss.Rule) {
+  const { selector } = rule;
+
+  if (/^\.mdc-([a-zA-Z]+-?)+$/.test(selector)) {
+    // handle Block
+    const name = rule.selector.replace(/\.mdc-/, '');
+    const opts = Object.assign({}, options, { name });
+    debug('Rule:', selector, 'as Block using name', name);
+    handleChildRule(opts, rule);
+    // options.program.body.push(options.t.exportDefaultDeclaration(options.t.identifier(name)));
+  } else if (/^&__([a-zA-Z]+-?)+$/.test(selector)) {
+    // handle Element
+    const name = options.name + camelize(rule.selector.replace('&__', '').replace(/-/g, '_'));
+    const opts = Object.assign({}, options, { name });
+    debug('Rule:', selector, 'as Element using name', name);
+    handleChildRule(opts, rule);
+  } else {
+    debug('Skipping child Rule:', rule.selector);
+  }
 }
 
 function handleAtRule(options: Options, rule: postcss.AtRule) {
-  debug('Skipping AtRule: ', rule.name);
+  debug('Skipping AtRule:', rule.name, rule.params);
 }
 
 function handleComment(options: Options, comment: postcss.Comment) {
@@ -96,11 +106,10 @@ function handleNode(options: Options) {
 }
 
 interface BabelPluginArg {
-  template: typeof babel.template;
   types: typeof babel.types;
 }
 
-function babelPlugin({ template, types: t }: BabelPluginArg) {
+function babelPlugin({ types: t }: BabelPluginArg) {
   // 'File', 'options', 'buildExternalHelpers', 'template', 'resolvePlugin', 'resolvePreset',
   // 'version', 'util', 'messages', 'traverse', 'OptionManager', 'Pipeline',
   // 'analyse', 'transform', 'transformFromAst', 'Plugin', 'transformFile', 'transformFileSync'
@@ -110,7 +119,7 @@ function babelPlugin({ template, types: t }: BabelPluginArg) {
       Program(path, state) {
         const program = <babel.types.Program>path.node;
         const root = <postcss.Root>state.opts;
-        const opts = { isRoot: true, name: '', program, root, t, template };
+        const opts = { isRoot: true, name: '', program, root, t };
         root.each(handleNode(opts));
 
         program.body.push(
@@ -125,20 +134,20 @@ const prettierOpts = {
   trailingComma: 'es5'
 };
 
-const buildComponents = through.obj(function(chunk, enc, cb) {
+const buildComponents = through.obj(function (chunk, enc, cb) {
   let output;
   function plugin(root: postcss.Root, opts: any) {
     output = babel.transform(`
       import * as React from 'react';
       import * as styled from 'styled-components';
-    `, { plugins: [[babelPlugin, root]]})
+    `, { plugins: [[babelPlugin, root]] })
   }
 
   const input = chunk.contents.toString(enc);
   const root = postcss([plugin]).process(input, { syntax: sass })
   root.css; // evaluate lazy result
 
-  const name = path.basename(chunk.path).replace(/mdc-/, '');
+  const name = path.basename(chunk.path).replace(/mdc-|\.scss/g, '');
   const { code } = babel.transformFromAst(output.ast);
   chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
   chunk.contents = Buffer.from(prettier.format(code, prettierOpts));
