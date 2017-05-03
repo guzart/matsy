@@ -1,41 +1,48 @@
-import * as babel from 'babel-core';
 import * as debugFactory from 'debug';
 import { camelize } from 'inflection';
 import * as postcss from 'postcss';
+import * as ts from 'typescript';
 
 import handleNode, { IOptions } from './handleNode';
 
 const debug = debugFactory('matsy');
 
-const decoratorTemplate = babel.template(`
-  const NAME = (Component: any) => STYLE;
-`, { plugins: ['flow'] });
-
 function handleChildRuleDeclarations(options: IOptions, rule: postcss.Rule) {
-  const { program, t } = options;
+  const { out } = options;
 
   const declarations = rule.nodes
     .filter((n) => n.type === 'decl')
     .map((decl: postcss.Declaration) => (`${decl.prop}: ${decl.value};`));
 
-  const templateExpr = t.taggedTemplateExpression(
-    t.callExpression(
-      t.identifier('styled'),
-      [t.identifier('Component')],
-    ),
-    t.templateLiteral(
-      // TODO: improve indentation
-      [t.templateElement({ raw: '\n  ' + declarations.join('\n  ') + '\n' })],
-      [],
-    ),
+  const tempHead = ts.createNode(ts.SyntaxKind.FirstTemplateToken, -1, -1) as ts.NoSubstitutionTemplateLiteral;
+  // tslint:disable-next-line
+  // synHeadNode.flags |= ts.NodeFlags.Synthesized;
+  tempHead.text = declarations.join('\n');
+
+  const buildExpr = ts.createCall(
+    ts.createIdentifier('styled'),
+    [],
+    [ts.createIdentifier('Component')],
   );
 
-  const componentNode = decoratorTemplate({
-    NAME: t.identifier(options.name),
-    STYLE: templateExpr,
-  });
+  const styledExpr = ts.createTaggedTemplate(buildExpr, tempHead);
 
-  program.body.push(componentNode as any);
+  const arrowExpr = ts.createArrowFunction(
+    [],
+    [],
+    [ts.createParameter([], [], undefined, ts.createIdentifier('Component'))],
+    undefined,
+    ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+    styledExpr,
+  );
+
+  const varDecl = ts.createVariableDeclaration(ts.createIdentifier(options.name), undefined, arrowExpr);
+  const statement = ts.createVariableStatement(
+    [],
+    ts.createVariableDeclarationList([varDecl], ts.NodeFlags.Const),
+  );
+
+  options.out.push(statement);
 }
 
 function handleChildRule(options: IOptions, rule: postcss.Rule) {

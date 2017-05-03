@@ -1,5 +1,5 @@
-import * as babel from 'babel-core';
 import * as postcss from 'postcss';
+import * as ts from 'typescript';
 
 import handleAtRule from './handleAtRule';
 import handleComment from './handleComment';
@@ -7,9 +7,8 @@ import handleRule from './handleRule';
 
 export interface IOptions {
   name: string;
-  program: babel.types.Program;
+  out: ts.Statement[];
   root: postcss.Root;
-  t: typeof babel.types;
 }
 
 function handleNode(options: IOptions) {
