@@ -8,14 +8,14 @@ gulp.task('build:button', () =>
   gulp.src('node_modules/@material/button/mdc-button.scss')
     .pipe(plumber())
     .pipe(buildComponents)
-    .pipe(gulp.dest('packages/matsy-button'))
+    .pipe(gulp.dest('packages/matsy-button')),
 );
 
 gulp.task('build:card', () =>
   gulp.src('node_modules/@material/card/mdc-card.scss')
     .pipe(plumber())
     .pipe(buildComponents)
-    .pipe(gulp.dest('packages/matsy-card'))
+    .pipe(gulp.dest('packages/matsy-card')),
 );
 
 gulp.task('build', ['build:card']);
