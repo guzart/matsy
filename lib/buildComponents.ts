@@ -5,7 +5,6 @@ import * as postcss from 'postcss';
 import * as sass from 'postcss-scss';
 import * as through from 'through2';
 import * as ts from 'typescript';
-import * as tsf from 'typescript-formatter';
 
 import handleNode from './handleNode';
 
