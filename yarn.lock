@@ -57,6 +57,10 @@
     "@types/orchestrator" "*"
     "@types/vinyl" "*"
 
+"@types/lodash@^4.14.63":
+  version "4.14.63"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.63.tgz#5ac475f55bfdc62bc88c4239dbc482f2f3bead93"
+
 "@types/node@*":
   version "7.0.15"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.15.tgz#628429289604c5f7e56c13f3a0422f3e59df1a17"
@@ -1082,6 +1086,10 @@ path-root@^0.1.1:
   resolved "https://registry.yarnpkg.com/path-root/-/path-root-0.1.1.tgz#9a4a6814cac1c0cd73360a95f32083c8ea4745b7"
   dependencies:
     path-root-regex "^0.1.0"
+
+polished@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-1.1.1.tgz#44493e22a8947781799a7565230dfb5c95cf7215"
 
 postcss-scss@^0.4.1:
   version "0.4.1"

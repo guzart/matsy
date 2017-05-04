@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/guzart/matsy#readme",
   "devDependencies": {
+    "@material/animation": "^0.2.0",
     "@material/button": "^0.3.4",
     "@material/card": "^0.1.8",
     "@material/elevation": "^0.1.5",
@@ -48,5 +49,8 @@
     "react": "^15.4.2",
     "styled-components": "next"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/lodash": "^4.14.63",
+    "polished": "^1.1.1"
+  }
 }

@@ -3,7 +3,9 @@ import * as gulp from 'gulp';
 import * as plumber from 'gulp-plumber';
 
 import buildComponents from './lib/buildComponents';
+import buildElevation from './lib/buildElevation';
 
+// TODO: abstract to also render card
 gulp.task('build:button', () =>
   gulp.src('node_modules/@material/button/mdc-button.scss')
     .pipe(plumber())
@@ -11,14 +13,14 @@ gulp.task('build:button', () =>
     .pipe(gulp.dest('packages/matsy-button')),
 );
 
-gulp.task('build:card', () =>
-  gulp.src('node_modules/@material/card/mdc-card.scss')
+gulp.task('build:elevation', () =>
+  gulp.src('node_modules/@material/elevation/_*.scss')
     .pipe(plumber())
-    .pipe(buildComponents)
-    .pipe(gulp.dest('packages/matsy-card')),
+    .pipe(buildElevation)
+    .pipe(gulp.dest('packages/matsy-elevation')),
 );
 
-gulp.task('build', ['build:card']);
+gulp.task('build', ['build:elevation']);
 
 gulp.task('dev', () => {
   gulp.watch('./lib/**/*.ts', () => {
