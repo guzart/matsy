@@ -5,6 +5,7 @@ import * as postcss from 'postcss';
 import * as sass from 'postcss-scss';
 import * as through from 'through2';
 import * as ts from 'typescript';
+import * as tsf from 'typescript-formatter';
 
 import handleNode from './handleNode';
 
@@ -15,7 +16,10 @@ function compile(root: postcss.Root) {
   root.each(handleNode({ name: '', out, root }));
 
   const code = `
+    import { ComponentClass, StatelessComponent } from 'react';
     import styled from 'styled-components';
+
+    type Component<P> = ComponentClass<P> | StatelessComponent<P>;
   `;
 
   const source = ts.createSourceFile('matsy.ts', code, ts.ScriptTarget.ES2015, true, ts.ScriptKind.TS);
@@ -25,25 +29,36 @@ function compile(root: postcss.Root) {
   return printer.printFile(result);
 }
 
-const defaultOptions = {
-  experimentalAsyncFunctions: true,
-  experimentalDecorators: true,
-  jsx: true,
-};
-
-const buildComponents = through.obj(function(chunk, enc, cb) {
+function process(input: string) {
   let output: string;
-  const input = chunk.contents.toString(enc);
   const processor = postcss([(root: postcss.Root) => { output = compile(root); }]);
   // tslint:disable-next-line
   processor.process(input, { syntax: sass }).css; // evaluate lazy result
+  return output;
+}
 
-  const name = path.basename(chunk.path).replace(/mdc-|\.scss/g, '');
-  chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
-  chunk.contents = Buffer.from(output);
-  this.push(chunk);
+function format(input: string) {
+  // TODO: tsfmt doesn't seem to provide much value
+  return Promise.resolve(
+    input
+      .replace(/\\n/g, '\n')
+      .replace(/\) `/g, ')`')
+      .replace(/^(?=type)/mg, '\n')
+      .replace(/^(?=export const)/mg, '\n'),
+  );
+}
 
-  cb();
+const buildComponents = through.obj(function(chunk, enc, cb) {
+  const input = chunk.contents.toString(enc);
+  format(process(input))
+    .then((output) => {
+      const name = path.basename(chunk.path).replace(/mdc-|\.scss/g, '');
+      chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
+      chunk.contents = Buffer.from(output);
+      this.push(chunk);
+
+      cb();
+    });
 });
 
 export default buildComponents;

@@ -27,6 +27,7 @@
   "devDependencies": {
     "@material/button": "^0.3.4",
     "@material/card": "^0.1.8",
+    "@material/elevation": "^0.1.5",
     "@types/gulp": "^4.0.2",
     "@types/react": "^15.0.23",
     "@types/through2": "^2.0.32",
@@ -37,10 +38,10 @@
     "lodash": "^4.17.4",
     "postcss-scss": "^0.4.1",
     "react": "^15.5.4",
-    "styled-components": "next",
+    "styled-components": "2.0.0-17",
     "through2": "^2.0.3",
-    "ts-node": "^3.0.2",
-    "tslint": "^5.1.0",
+    "ts-node": "^3.0.3",
+    "tslint": "^5.2.0",
     "typescript": "^2.3.2"
   },
   "peerDependencies": {

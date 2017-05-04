@@ -17,7 +17,7 @@ function handleChildRuleDeclarations(options: IOptions, rule: postcss.Rule) {
   const tempHead = ts.createNode(ts.SyntaxKind.FirstTemplateToken, -1, -1) as ts.NoSubstitutionTemplateLiteral;
   // tslint:disable-next-line
   // synHeadNode.flags |= ts.NodeFlags.Synthesized;
-  tempHead.text = declarations.join('\n');
+  tempHead.text = '\n  ' + declarations.join('\n  ') + '\n';
 
   const buildExpr = ts.createCall(
     ts.createIdentifier('styled'),
@@ -29,16 +29,26 @@ function handleChildRuleDeclarations(options: IOptions, rule: postcss.Rule) {
 
   const arrowExpr = ts.createArrowFunction(
     [],
-    [],
-    [ts.createParameter([], [], undefined, ts.createIdentifier('Component'))],
+    [ts.createTypeParameterDeclaration(ts.createIdentifier('P'), undefined, undefined)],
+    [
+      ts.createParameter(
+        [],
+        [],
+        undefined,
+        ts.createIdentifier('Component'),
+        undefined,
+        ts.createTypeReferenceNode(ts.createIdentifier('Component'), [ts.createTypeReferenceNode('P', [])]),
+      ),
+    ],
     undefined,
     ts.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
     styledExpr,
   );
 
   const varDecl = ts.createVariableDeclaration(ts.createIdentifier(options.name), undefined, arrowExpr);
+
   const statement = ts.createVariableStatement(
-    [],
+    [ts.createToken(ts.SyntaxKind.ExportKeyword)],
     ts.createVariableDeclarationList([varDecl], ts.NodeFlags.Const),
   );
 
