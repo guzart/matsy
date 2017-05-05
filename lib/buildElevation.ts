@@ -11,7 +11,13 @@ import handleComment from './handleComment';
 
 const debug = debugFactory('matsy');
 
+interface ImportLib {
+  library: string;
+  name: string;
+}
+
 interface ImportMap {
+  material: ImportLib[];
   polished: string[];
 }
 
@@ -22,18 +28,23 @@ export interface IOptions {
   root: postcss.Root;
 }
 
+function getVariableName(value: string) {
+  return camelize(value.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
+}
+
 function isPolishedFunction(value: string) {
   return /^rgb/.test(value);
 }
 
 function parseValue(value: string) {
-  if (/^\s*\d+\s*$/.test(value)) {
-    return parseInt(value, 10);
-  } else if (/^\s*\d*\.\d+\s*/.test(value)) {
-    return parseFloat(`0${value}`);
+  const clean = value.replace(/\s*!default\s*$/, '');
+  if (/^\s*\d+\s*$/.test(clean)) {
+    return parseInt(clean, 10);
+  } else if (/^\s*\d*\.\d+\s*/.test(clean)) {
+    return parseFloat(`0${clean}`);
   }
 
-  return value.replace(/^\s*\"?|\"?\s*$/g, '');
+  return clean.replace(/^\s*\"?|\"?\s*$/g, '');
 }
 
 function extractArgs(value: string) {
@@ -45,7 +56,7 @@ function extractArgs(value: string) {
 }
 
 function handlePolishedFunction(options: IOptions, node: postcss.Declaration) {
-  debug('Handle', node.prop, ' as polished function');
+  debug(`Handle ${node.prop} as polished function`);
   const funcName = node.value.replace(/\(.+$/, '');
   const args = extractArgs(node.value);
   options.imp.polished.push(funcName);
@@ -75,7 +86,7 @@ function clone(node: any) {
 }
 
 function handleMapValue(options: IOptions, node: postcss.Declaration) {
-  debug('Handle', node.prop, ' as map');
+  debug(`Handle ${node.prop} as map`);
 
   const mapText = 'const map = ' + node.value.replace(/^\s*\(/, '{').replace(/\)\s*$/, '}');
   const src = ts.createSourceFile('map-value.ts', mapText, ts.ScriptTarget.ES2015, true, ts.ScriptKind.JS);
@@ -89,12 +100,52 @@ function isMap(value: string) {
   return /^\([\s\S]*([\s\S]+\:[\s\S+],?)+[\s\S]*\)$/.test(value);
 }
 
+function isLiteral(value: string) {
+  return !/\$/.test(value);
+}
+
+function handleLiteral(options: IOptions, node: postcss.Declaration) {
+  debug(`Handle ${node.prop} as literal`);
+  return ts.createLiteral(parseValue(node.value));
+}
+
+function isVariableReference(value) {
+  return /\$/.test(value);
+}
+
+function isLocalVariable(localName, variableName) {
+  let localValue = localName[0];
+  let varValue = variableName[0];
+  if (localValue !== varValue) {
+    return false;
+  }
+
+  let localIndex = 1;
+  let varIndex = 1;
+  while (localValue === varValue && localIndex < localName.length && varIndex < variableName.length) {
+    localValue = localName[localIndex++];
+    varValue = varValue[varIndex++];
+  }
+
+  return localIndex > 3;
+}
+
+function handleVariableReference(options: IOptions, node: postcss.Declaration) {
+  debug(`Handle ${node.prop} as variable reference`);
+  // TODO: Check if this is a local variable or a reference to another library variable.
+  // We should parse this expression.... but how?
+}
+
 function handleVariableValue(options: IOptions, node: postcss.Declaration) {
   const value = node.value;
   if (isPolishedFunction(value)) {
     return handlePolishedFunction(options, node);
   } else if (isMap(value)) {
     return handleMapValue(options, node);
+  } else if (isLiteral(value)) {
+    return handleLiteral(options, node);
+  // } else if (isVariableReference(value)) {
+  //   return handleVariableReference(options, node);
   }
 
   debug('Cannot handle', node.prop, value, 'as variable');
@@ -102,8 +153,9 @@ function handleVariableValue(options: IOptions, node: postcss.Declaration) {
   return null;
 }
 
+
 function handleVariable(options: IOptions, node: postcss.Declaration) {
-  const name = camelize(node.prop.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
+  const name = getVariableName(node.prop);
   const varValue = handleVariableValue(options, node);
   if (!varValue) {
     debug('Cannot handle variable value', node.prop, node.value);
@@ -129,6 +181,21 @@ function handleDeclaration(options: IOptions, node: postcss.Declaration) {
   }
 }
 
+function handleAtRule(options: IOptions, node: postcss.AtRule) {
+  if (node.name === 'import') {
+    const params = node.params.replace(/['"]/g, '');
+    if (/@material\//.test(params)) {
+      const library = params.replace(/@material\/([^\/]+)\/.+/, '$1');
+      const name = params.replace(/.*\/(\w+)$/, '$1');
+      options.imp.material.push({ library, name });
+      debug(`Handle ${node.name} as ${library}/${name}`);
+      return;
+    }
+  }
+
+  debug('Cannot handle atRule', node.name, node.params);
+}
+
 function handleNode(options: IOptions) {
   return (node: postcss.Node) => {
     switch (node.type) {
@@ -140,8 +207,13 @@ function handleNode(options: IOptions) {
         handleDeclaration(options, node as postcss.Declaration);
         break;
 
+      case 'atrule':
+        handleAtRule(options, node as postcss.AtRule);
+        break;
+
       default:
-        debug(`Cannot handle postcss.${node.type}`, 'type');
+        debug(`Cannot handle postcss.${node.type}`);
+        debug(node);
         break;
     }
   };
@@ -170,7 +242,7 @@ function importStatements(imp: ImportMap) {
 }
 
 function compile(root: postcss.Root) {
-  const imp = { polished: [] };
+  const imp = { material: [], polished: [] };
   const out = [];
   root.each(handleNode({ imp, name: '', out, root }));
 
