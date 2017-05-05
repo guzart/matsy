@@ -57,29 +57,31 @@ function handlePolishedFunction(options: IOptions, node: postcss.Declaration) {
   );
 }
 
+function clone(node: any) {
+  switch (node.kind) {
+    case ts.SyntaxKind.PropertyAssignment:
+      const n = node as ts.PropertyAssignment;
+      return ts.createPropertyAssignment(clone(n.name), clone(n.initializer));
+
+    case ts.SyntaxKind.StringLiteral:
+      return ts.createLiteral(node.text);
+
+    case ts.SyntaxKind.FirstLiteralToken:
+      return ts.createIdentifier(node.text);
+  }
+
+  debug(ts.SyntaxKind[node.kind]);
+  return node;
+}
+
 function handleMapValue(options: IOptions, node: postcss.Declaration) {
   debug('Handle', node.prop, ' as map');
 
-  // const mapText = 'const map = ' + node.value.replace(/^\s*\(/, '{').replace(/\)\s*$/, '}');
-  // const src = ts.createSourceFile('map-value.ts', mapText, ts.ScriptTarget.ES2015, true, ts.ScriptKind.JS);
-  // const statement = src.statements[0] as ts.VariableStatement;
-  // const objectExpr = statement.declarationList.declarations[0].initializer as ts.ObjectLiteralExpression;
-  // objectExpr.flags = ts.NodeFlags.Synthesized;
-  // objectExpr.pos = -1;
-  // objectExpr.end = -1;
-  // objectExpr.parent = undefined;
-
-  const groups = node.value.replace(/^\s*\(?\s*|\n|\s*\)\s*$/mg, '').split(',').map((g) => g.split(':'));
-  debug(node.value.replace(/^\s*\(?\s*|\n|\s*\)\s*$/mg, ''));
-  const objectExpr = ts.createObjectLiteral(
-    groups.map(([a, b]) => {
-      const name = ts.createIdentifier(a);
-      return ts.createPropertyAssignment(name, ts.createLiteral(parseValue(b)));
-    }),
-    true,
-  );
-
-  return objectExpr;
+  const mapText = 'const map = ' + node.value.replace(/^\s*\(/, '{').replace(/\)\s*$/, '}');
+  const src = ts.createSourceFile('map-value.ts', mapText, ts.ScriptTarget.ES2015, true, ts.ScriptKind.JS);
+  const varDecl = (src.statements[0] as any).declarationList.declarations[0] as ts.VariableDeclaration;
+  const expr = varDecl.initializer as ts.ObjectLiteralExpression;
+  return ts.createObjectLiteral(expr.properties.map(clone), true);
 }
 
 function isMap(value: string) {
