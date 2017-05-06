@@ -318,8 +318,8 @@ function format(input) {
   );
 }
 
-const buildElevation = () => {
-  return through.obj(function(chunk, enc, cb) {
+const buildElevation = () =>
+  through.obj(function(chunk, enc, cb) {
     const input = chunk.contents.toString(enc);
     const libName = path.dirname(chunk.path).match(/\/([^\/]+)$/)[1];
     format(process(libName, input))
@@ -332,6 +332,5 @@ const buildElevation = () => {
         cb();
       });
   });
-};
 
 export default buildElevation;

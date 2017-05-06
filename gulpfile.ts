@@ -1,36 +1,32 @@
 import { spawn } from 'child_process';
 import * as gulp from 'gulp';
-import * as plumber from 'gulp-plumber';
 
 import buildComponents from './lib/buildComponents';
 import buildElevation from './lib/buildElevation';
 
 // TODO: abstract to also render card
-gulp.task('build:button', () =>
-  gulp.src('node_modules/@material/button/mdc-button.scss')
-    .pipe(plumber())
+gulp.task('build:components', () =>
+  gulp.src(['node_modules/@material/button/mdc-button.scss', 'node_modules/@material/card/mdc-card.scss'])
     .pipe(buildComponents())
     .pipe(gulp.dest('packages/matsy-button')),
 );
 
-gulp.task('build:animation', () =>
-  gulp.src('node_modules/@material/animation/_variables.scss')
-    .pipe(plumber())
+gulp.task('build:deps', () =>
+  gulp.src(['node_modules/@material/animation/_*.scss', 'node_modules/@material/elevation/_*.scss'])
     .pipe(buildElevation())
     .pipe(gulp.dest('packages/matsy-animation')),
 );
 
-gulp.task('build:elevation', () =>
-  gulp.src('node_modules/@material/elevation/_variables.scss')
-    .pipe(plumber())
+gulp.task('build', ['build:components', 'build:deps']);
+
+gulp.task('dev:build', () =>
+  gulp.src('node_modules/@material/elevation/_mixins.scss')
     .pipe(buildElevation())
     .pipe(gulp.dest('packages/matsy-elevation')),
 );
 
-gulp.task('build', ['build:animation', 'build:elevation']);
-
 gulp.task('dev', () => {
   gulp.watch('./lib/**/*.ts', () => {
-    const cmd = spawn('gulp', ['build'], { stdio: 'inherit' });
+    const cmd = spawn('gulp', ['dev:build'], { stdio: 'inherit' });
   });
 });

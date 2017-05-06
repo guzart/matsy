@@ -47,7 +47,7 @@ function format(input: string) {
   );
 }
 
-const buildComponents = () => {
+const buildComponents = () =>
   through.obj(function(chunk, enc, cb) {
     const input = chunk.contents.toString(enc);
     format(process(input))
@@ -60,6 +60,5 @@ const buildComponents = () => {
         cb();
       });
   });
-};
 
 export default buildComponents;
