@@ -1,5 +1,8 @@
 import { ComponentClass, StatelessComponent } from 'react';
 import styled from 'styled-components';
+import * as elevationLib from '../elevation/mixins';
+import * as themeLib from '../theme/mixins';
+import * as typographyLib from '../typography/mixins';
 
 type Component<P> = ComponentClass<P> | StatelessComponent<P>;
 

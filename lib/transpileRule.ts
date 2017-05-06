@@ -3,7 +3,8 @@ import { camelize } from 'inflection';
 import * as postcss from 'postcss';
 import * as ts from 'typescript';
 
-import handleNode, { IOptions } from './handleNode';
+import handleNode, { IOptions } from './transpile';
+import transpileNode from './transpileNode';
 
 const debug = debugFactory('matsy');
 
@@ -62,7 +63,7 @@ function handleChildRule(options: IOptions, rule: postcss.Rule) {
   // Now consider adding more components
   const otherNodes = rule.nodes.filter((n) => n.type !== 'decl');
   const nodeOpts = Object.assign({}, options, {});
-  otherNodes.forEach(handleNode(nodeOpts));
+  otherNodes.forEach(transpileNode(nodeOpts));
 }
 
 function handleRule(options: IOptions, rule: postcss.Rule) {
@@ -74,7 +75,7 @@ function handleRule(options: IOptions, rule: postcss.Rule) {
     const opts = Object.assign({}, options, { name });
     debug('Rule:', selector, 'as Block using name', name);
     handleChildRule(opts, rule);
-    // options.program.body.push(options.t.exportDefaultDeclaration(options.t.identifier(name)));
+    options.imp.react = true;
   } else if (/^&__([a-zA-Z]+-?)+$/.test(selector)) {
     // handle Element
     const name = options.name + camelize(rule.selector.replace('&__', '').replace(/-/g, '_'));

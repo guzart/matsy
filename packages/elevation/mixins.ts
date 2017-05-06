@@ -1,7 +1,7 @@
-import * as elevationLib from "../elevation/variables";
-export var  =  => {
-    "";
-};
-export var  =  => {
-    "";
-};
+import * as elevationLib from '../elevation/variables';
+export let  = ;  => {
+    '';
+}
+export let  = ;  => {
+    '';
+}

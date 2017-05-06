@@ -1,1 +1,1 @@
-import * as animationLib from "../animation/variables";
+import * as animationLib from '../animation/variables';
