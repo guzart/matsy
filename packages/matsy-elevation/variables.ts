@@ -1,4 +1,5 @@
 import { rgba } from "polished";
+import * as animation from "../matsy-animation/variables";
 
 export const elevationUmbraColor = rgba("black", 0.2);
 
@@ -93,3 +94,5 @@ export const elevationAmbientMap = {
 export const elevationProperty = "box-shadow";
 
 export const elevationTransitionDuration = "280ms";
+
+export const elevationTransitionTimingFunction = animation.animationFastOutSlowInTimingFunction;

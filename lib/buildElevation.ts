@@ -11,13 +11,13 @@ import handleComment from './handleComment';
 
 const debug = debugFactory('matsy');
 
-interface ImportLib {
+interface ItemRef {
   library: string;
   name: string;
 }
 
 interface ImportMap {
-  material: ImportLib[];
+  material: ItemRef[];
   polished: string[];
 }
 
@@ -26,25 +26,36 @@ export interface IOptions {
   name: string;
   out: ts.Statement[];
   root: postcss.Root;
+  vars: ItemRef[];
 }
 
 function getVariableName(value: string) {
   return camelize(value.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
 }
 
+function getLibraryName(options: IOptions, value: string) {
+  const name = value.replace('$mdc-', '');
+  const imp = options.imp.material.find((i) => name.indexOf(i.library) === 0);
+  return imp.library;
+}
+
 function isPolishedFunction(value: string) {
   return /^rgb/.test(value);
 }
 
+function cleanValue(value: string) {
+  return value.replace(/\s*!default\s*$/, '').replace(/^\s*\"?|\"?\s*$/g, '');
+}
+
 function parseValue(value: string) {
-  const clean = value.replace(/\s*!default\s*$/, '');
+  const clean = cleanValue(value);
   if (/^\s*\d+\s*$/.test(clean)) {
     return parseInt(clean, 10);
   } else if (/^\s*\d*\.\d+\s*/.test(clean)) {
     return parseFloat(`0${clean}`);
   }
 
-  return clean.replace(/^\s*\"?|\"?\s*$/g, '');
+  return clean;
 }
 
 function extractArgs(value: string) {
@@ -132,6 +143,10 @@ function isLocalVariable(localName, variableName) {
 
 function handleVariableReference(options: IOptions, node: postcss.Declaration) {
   debug(`Handle ${node.prop} as variable reference`);
+  const libName = getLibraryName(options, node.value);
+  const varName = getVariableName(cleanValue(node.value));
+
+  return ts.createPropertyAccess(ts.createIdentifier(libName), ts.createIdentifier(varName));
   // TODO: Check if this is a local variable or a reference to another library variable.
   // We should parse this expression.... but how?
 }
@@ -144,8 +159,8 @@ function handleVariableValue(options: IOptions, node: postcss.Declaration) {
     return handleMapValue(options, node);
   } else if (isLiteral(value)) {
     return handleLiteral(options, node);
-  // } else if (isVariableReference(value)) {
-  //   return handleVariableReference(options, node);
+  } else if (isVariableReference(value)) {
+    return handleVariableReference(options, node);
   }
 
   debug('Cannot handle', node.prop, value, 'as variable');
@@ -153,8 +168,9 @@ function handleVariableValue(options: IOptions, node: postcss.Declaration) {
   return null;
 }
 
-
 function handleVariable(options: IOptions, node: postcss.Declaration) {
+  options.vars.push({ library: options.name, name: node.prop });
+
   const name = getVariableName(node.prop);
   const varValue = handleVariableValue(options, node);
   if (!varValue) {
@@ -238,13 +254,29 @@ function importStatements(imp: ImportMap) {
     );
   }
 
+  if (imp.material.length > 0) {
+    imp.material.forEach((mlib) =>
+      out.push(
+        ts.createImportDeclaration(
+          [],
+          [],
+          ts.createImportClause(
+            undefined,
+            ts.createNamespaceImport(ts.createIdentifier(mlib.library)),
+          ),
+          ts.createLiteral(`../matsy-${mlib.library}/${mlib.name}`),
+        ),
+      ),
+    );
+  }
+
   return out;
 }
 
-function compile(root: postcss.Root) {
+function compile(name, root: postcss.Root) {
   const imp = { material: [], polished: [] };
   const out = [];
-  root.each(handleNode({ imp, name: '', out, root }));
+  root.each(handleNode({ imp, name, out, root, vars: [] }));
 
   // const code = `
   //   import { ComponentClass, StatelessComponent } from 'react';
@@ -260,9 +292,9 @@ function compile(root: postcss.Root) {
   return printer.printFile(result);
 }
 
-function process(input) {
+function process(libName, input) {
   let output: string;
-  const processor = postcss([(root: postcss.Root) => { output = compile(root); }]);
+  const processor = postcss([(root: postcss.Root) => { output = compile(libName, root); }]);
   // tslint:disable-next-line
   processor.process(input, { syntax: sass }).css; // evaluate lazy result
   return output;
@@ -275,17 +307,20 @@ function format(input) {
   );
 }
 
-const buildElevation = through.obj(function(chunk, enc, cb) {
-  const input = chunk.contents.toString(enc);
-  format(process(input))
-    .then((output) => {
-      const name = path.basename(chunk.path).replace(/^_|mdc-|\.scss/g, '');
-      chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
-      chunk.contents = Buffer.from(output);
-      this.push(chunk);
+const buildElevation = () => {
+  return through.obj(function(chunk, enc, cb) {
+    const input = chunk.contents.toString(enc);
+    const libName = path.dirname(chunk.path).match(/\/([^\/]+)$/)[1];
+    format(process(libName, input))
+      .then((output) => {
+        const name = path.basename(chunk.path).replace(/^_|mdc-|\.scss/g, '');
+        chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
+        chunk.contents = Buffer.from(output);
+        this.push(chunk);
 
-      cb();
-    });
-});
+        cb();
+      });
+  });
+};
 
 export default buildElevation;

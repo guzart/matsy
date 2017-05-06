@@ -13,14 +13,21 @@ gulp.task('build:button', () =>
     .pipe(gulp.dest('packages/matsy-button')),
 );
 
-gulp.task('build:elevation', () =>
-  gulp.src('node_modules/@material/elevation/_*.scss')
+gulp.task('build:animation', () =>
+  gulp.src('node_modules/@material/animation/_variables.scss')
     .pipe(plumber())
-    .pipe(buildElevation)
+    .pipe(buildElevation())
+    .pipe(gulp.dest('packages/matsy-animation')),
+);
+
+gulp.task('build:elevation', () =>
+  gulp.src('node_modules/@material/elevation/_variables.scss')
+    .pipe(plumber())
+    .pipe(buildElevation())
     .pipe(gulp.dest('packages/matsy-elevation')),
 );
 
-gulp.task('build', ['build:elevation']);
+gulp.task('build', ['build:animation', 'build:elevation']);
 
 gulp.task('dev', () => {
   gulp.watch('./lib/**/*.ts', () => {
