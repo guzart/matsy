@@ -9,7 +9,7 @@ import buildElevation from './lib/buildElevation';
 gulp.task('build:button', () =>
   gulp.src('node_modules/@material/button/mdc-button.scss')
     .pipe(plumber())
-    .pipe(buildComponents)
+    .pipe(buildComponents())
     .pipe(gulp.dest('packages/matsy-button')),
 );
 

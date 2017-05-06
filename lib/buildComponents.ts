@@ -47,17 +47,19 @@ function format(input: string) {
   );
 }
 
-const buildComponents = through.obj(function(chunk, enc, cb) {
-  const input = chunk.contents.toString(enc);
-  format(process(input))
-    .then((output) => {
-      const name = path.basename(chunk.path).replace(/mdc-|\.scss/g, '');
-      chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
-      chunk.contents = Buffer.from(output);
-      this.push(chunk);
+const buildComponents = () => {
+  through.obj(function(chunk, enc, cb) {
+    const input = chunk.contents.toString(enc);
+    format(process(input))
+      .then((output) => {
+        const name = path.basename(chunk.path).replace(/mdc-|\.scss/g, '');
+        chunk.path = path.join(path.dirname(chunk.path), `${name}.ts`);
+        chunk.contents = Buffer.from(output);
+        this.push(chunk);
 
-      cb();
-    });
-});
+        cb();
+      });
+  });
+};
 
 export default buildComponents;
