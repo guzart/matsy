@@ -76,6 +76,7 @@ function handleRule(options: IOptions, rule: postcss.Rule) {
     debug('Rule:', selector, 'as Block using name', name);
     handleChildRule(opts, rule);
     options.imp.react = true;
+    options.imp.styled.push('styled');
   } else if (/^&__([a-zA-Z]+-?)+$/.test(selector)) {
     // handle Element
     const name = options.name + camelize(rule.selector.replace('&__', '').replace(/-/g, '_'));

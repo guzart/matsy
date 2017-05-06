@@ -41,6 +41,7 @@ function transpileMixin(options: IOptions, node: postcss.Node) {
   const mixinNode = $('stylesheet').children('atrule');
   const mixinName = utils.getVariableName(mixinNode.children('identifier').value(), options.name);
 
+  options.imp.styled.push('css');
   return ts.createVariableStatement(
     [ts.createToken(ts.SyntaxKind.ExportKeyword)],
     ts.createVariableDeclarationList(

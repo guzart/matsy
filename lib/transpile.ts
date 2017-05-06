@@ -17,6 +17,7 @@ interface IImportMap {
   material: IItemRef[];
   polished: string[];
   react: boolean;
+  styled: string[];
 }
 
 interface IOptions {
@@ -30,7 +31,7 @@ interface IOptions {
 function execute(name: string, root: postcss.Root) {
   // shared between nodes
   const out = [];
-  const imp = { material: [], polished: [], react: false };
+  const imp = { material: [], polished: [], react: false, styled: [] };
   const vars = [];
 
   root.each(transpileNode({ imp, name, out, root, vars }));

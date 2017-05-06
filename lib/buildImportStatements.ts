@@ -4,12 +4,6 @@ import * as ts from 'typescript';
 import { IImportMap } from './transpile';
 import * as utils from './utils';
 
-// const code = `
-//   import { ComponentClass, StatelessComponent } from 'react';
-//   import styled from 'styled-components';
-//   type Component<P> = ComponentClass<P> | StatelessComponent<P>;
-// `;
-
 function reactImportStatements() {
   return ts.createImportDeclaration(
     [],
@@ -25,11 +19,20 @@ function reactImportStatements() {
   );
 }
 
-function styledComponentsStatement() {
+function styledComponentsStatement(deps: string[]) {
+  const hasStyled = deps.indexOf('styled') >= 0;
+  const names = uniq(deps).filter((n) => n !== 'styled');
+  const namedImports = deps.length === 0 ? undefined : ts.createNamedImports(uniq(deps).map((dep) =>
+    ts.createImportSpecifier(undefined, ts.createIdentifier(dep)),
+  ));
+
   return ts.createImportDeclaration(
     [],
     [],
-    ts.createImportClause(ts.createIdentifier('styled'), undefined),
+    ts.createImportClause(
+      hasStyled ? ts.createIdentifier('styled') : undefined,
+      namedImports,
+    ),
     ts.createLiteral('styled-components'),
   );
 }
@@ -54,7 +57,10 @@ function buildImportStatements(imp: IImportMap) {
 
   if (imp.react) {
     out.push(reactImportStatements());
-    out.push(styledComponentsStatement());
+  }
+
+  if (imp.styled.length > 0) {
+    out.push(styledComponentsStatement(imp.styled));
   }
 
   if (imp.polished.length > 0) {
@@ -75,7 +81,7 @@ function buildImportStatements(imp: IImportMap) {
   }
 
   if (imp.material.length > 0) {
-    imp.material.forEach((mlib) =>
+    uniq(imp.material).forEach((mlib) =>
       out.push(
         ts.createImportDeclaration(
           [],
