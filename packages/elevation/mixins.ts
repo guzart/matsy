@@ -1,7 +1,9 @@
 import * as elevationLib from '../elevation/variables';
-export let  = ;  => {
+
+export const elevation = (zValue: any) => {
     '';
-}
-export let  = ;  => {
+};
+
+export const transition = () => {
     '';
-}
+};

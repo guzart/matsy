@@ -17,9 +17,15 @@ function parseValue(value: string) {
   return clean;
 }
 
-function getVariableName(libraryName: string, value: string) {
-  const name = camelize(value.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
-  return camelize(name.replace(libraryName, ''), true);
+function getVariableName(value: string, libraryName?: string) {
+  const name = camelize(value.replace(/\$?mdc-/, '').replace(/-/g, '_'), true);
+  if (!libraryName) { return name; }
+
+  const nameNoLib = name.replace(libraryName, '');
+  if (nameNoLib !== '') { return camelize(nameNoLib, true); }
+
+  // if the variable name is the same as the library name
+  return name;
 }
 
 function getLibraryName(options: IOptions, value: string) {

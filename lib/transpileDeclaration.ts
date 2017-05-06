@@ -23,7 +23,7 @@ function handleVariableValue(options: IOptions, node: postcss.Declaration) {
 }
 
 function handleVariable(options: IOptions, node: postcss.Declaration) {
-  const name = utils.getVariableName(options.name, node.prop);
+  const name = utils.getVariableName(node.prop, options.name);
   const varValue = handleVariableValue(options, node);
   if (!varValue) {
     debug('Cannot handle variable value', node.prop, node.value);

@@ -25,7 +25,7 @@ gulp.task('build', () =>
 // DEV
 
 gulp.task('dev:build', () =>
-  gulp.src('node_modules/@material/elevation/_variables.scss', { base: 'node_modules/@material/'})
+  gulp.src('node_modules/@material/elevation/_mixins.scss', { base: 'node_modules/@material/'})
     .pipe(transpile())
     .pipe(format())
     .pipe(gulp.dest('packages')),

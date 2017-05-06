@@ -12,7 +12,7 @@ function isVariableReference(value) {
 function transpileVariableReference(options: IOptions, node: postcss.Declaration) {
   debug(`Handle ${node.prop} as variable reference`);
   const libName = utils.getLibraryName(options, node.value);
-  const varName = utils.getVariableName(libName, utils.cleanValue(node.value));
+  const varName = utils.getVariableName(utils.cleanValue(node.value), libName);
   const libImpName = utils.getLibraryImportName(libName);
 
   // TODO: Check if this is a local variable or a reference to another library variable.
