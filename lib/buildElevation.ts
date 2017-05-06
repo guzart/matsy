@@ -39,6 +39,10 @@ function getLibraryName(options: IOptions, value: string) {
   return imp.library;
 }
 
+function getLocalLibName(name: string) {
+  return camelize(`${name}Lib`, true);
+}
+
 function isPolishedFunction(value: string) {
   return /^rgb/.test(value);
 }
@@ -201,10 +205,17 @@ function handleAtRule(options: IOptions, node: postcss.AtRule) {
   if (node.name === 'import') {
     const params = node.params.replace(/['"]/g, '');
     if (/@material\//.test(params)) {
+      // @material import
       const library = params.replace(/@material\/([^\/]+)\/.+/, '$1');
       const name = params.replace(/.*\/(\w+)$/, '$1');
       options.imp.material.push({ library, name });
       debug(`Handle ${node.name} as ${library}/${name}`);
+      return;
+    } else if (/^\.\//.test(cleanValue(params))) {
+      // local import
+      const name = params.replace(/.*\/(\w+)$/, '$1');
+      debug(`Handle ${node.name} as local /${name}`);
+      options.imp.material.push({ library: options.name, name });
       return;
     }
   }
@@ -262,7 +273,7 @@ function importStatements(imp: ImportMap) {
           [],
           ts.createImportClause(
             undefined,
-            ts.createNamespaceImport(ts.createIdentifier(mlib.library)),
+            ts.createNamespaceImport(ts.createIdentifier(getLocalLibName(mlib.library))),
           ),
           ts.createLiteral(`../matsy-${mlib.library}/${mlib.name}`),
         ),
