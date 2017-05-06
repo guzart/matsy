@@ -1,13 +1,13 @@
 import { rgba } from "polished";
-import * as animation from "../matsy-animation/variables";
+import * as animationLib from "../animation/variables";
 
-export const elevationUmbraColor = rgba("black", 0.2);
+export const umbraColor = rgba("black", 0.2);
 
-export const elevationPenumbraColor = rgba("black", 0.14);
+export const penumbraColor = rgba("black", 0.14);
 
-export const elevationAmbientColor = rgba("black", 0.12);
+export const ambientColor = rgba("black", 0.12);
 
-export const elevationUmbraMap = {
+export const umbraMap = {
     0: "0px 0px 0px 0px",
     1: "0px 2px 1px -1px",
     2: "0px 3px 1px -2px",
@@ -35,7 +35,7 @@ export const elevationUmbraMap = {
     24: "0px 11px 15px -7px"
 };
 
-export const elevationPenumbraMap = {
+export const penumbraMap = {
     0: "0px 0px 0px 0px",
     1: "0px 1px 1px 0px",
     2: "0px 2px 2px 0px",
@@ -63,7 +63,7 @@ export const elevationPenumbraMap = {
     24: "0px 24px 38px 3px"
 };
 
-export const elevationAmbientMap = {
+export const ambientMap = {
     0: "0px 0px 0px 0px",
     1: "0px 1px 3px 0px",
     2: "0px 1px 5px 0px",
@@ -91,8 +91,8 @@ export const elevationAmbientMap = {
     24: "0px 9px 46px 8px"
 };
 
-export const elevationProperty = "box-shadow";
+export const property = "box-shadow";
 
-export const elevationTransitionDuration = "280ms";
+export const transitionDuration = "280ms";
 
-export const elevationTransitionTimingFunction = animation.animationFastOutSlowInTimingFunction;
+export const transitionTimingFunction = animationLib.fastOutSlowInTimingFunction;

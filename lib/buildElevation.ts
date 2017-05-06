@@ -4,6 +4,7 @@ import { uniq } from 'lodash';
 import * as path from 'path';
 import * as postcss from 'postcss';
 import * as sass from 'postcss-scss';
+import { parse } from 'scss-parser';
 import * as through from 'through2';
 import * as ts from 'typescript';
 
@@ -29,8 +30,9 @@ export interface IOptions {
   vars: ItemRef[];
 }
 
-function getVariableName(value: string) {
-  return camelize(value.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
+function getVariableName(libName: string, value: string) {
+  const name = camelize(value.replace(/\$mdc-/, '').replace(/-/g, '_'), true);
+  return camelize(name.replace(libName, ''), true);
 }
 
 function getLibraryName(options: IOptions, value: string) {
@@ -39,7 +41,7 @@ function getLibraryName(options: IOptions, value: string) {
   return imp.library;
 }
 
-function getLocalLibName(name: string) {
+function getLibraryImportName(name: string) {
   return camelize(`${name}Lib`, true);
 }
 
@@ -148,9 +150,10 @@ function isLocalVariable(localName, variableName) {
 function handleVariableReference(options: IOptions, node: postcss.Declaration) {
   debug(`Handle ${node.prop} as variable reference`);
   const libName = getLibraryName(options, node.value);
-  const varName = getVariableName(cleanValue(node.value));
+  const varName = getVariableName(libName, cleanValue(node.value));
+  const libImpName = getLibraryImportName(libName);
 
-  return ts.createPropertyAccess(ts.createIdentifier(libName), ts.createIdentifier(varName));
+  return ts.createPropertyAccess(ts.createIdentifier(libImpName), ts.createIdentifier(varName));
   // TODO: Check if this is a local variable or a reference to another library variable.
   // We should parse this expression.... but how?
 }
@@ -173,9 +176,7 @@ function handleVariableValue(options: IOptions, node: postcss.Declaration) {
 }
 
 function handleVariable(options: IOptions, node: postcss.Declaration) {
-  options.vars.push({ library: options.name, name: node.prop });
-
-  const name = getVariableName(node.prop);
+  const name = getVariableName(options.name, node.prop);
   const varValue = handleVariableValue(options, node);
   if (!varValue) {
     debug('Cannot handle variable value', node.prop, node.value);
@@ -183,12 +184,12 @@ function handleVariable(options: IOptions, node: postcss.Declaration) {
   }
 
   const varDecl = ts.createVariableDeclaration(ts.createIdentifier(name), undefined, varValue);
-
   const statement = ts.createVariableStatement(
     [ts.createToken(ts.SyntaxKind.ExportKeyword)],
     ts.createVariableDeclarationList([varDecl], ts.NodeFlags.Const),
   );
 
+  options.vars.push({ library: options.name, name: node.prop });
   options.out.push(statement);
 }
 
@@ -273,9 +274,9 @@ function importStatements(imp: ImportMap) {
           [],
           ts.createImportClause(
             undefined,
-            ts.createNamespaceImport(ts.createIdentifier(getLocalLibName(mlib.library))),
+            ts.createNamespaceImport(ts.createIdentifier(getLibraryImportName(mlib.library))),
           ),
-          ts.createLiteral(`../matsy-${mlib.library}/${mlib.name}`),
+          ts.createLiteral(`../${mlib.library}/${mlib.name}`),
         ),
       ),
     );
