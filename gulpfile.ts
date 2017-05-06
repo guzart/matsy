@@ -31,9 +31,9 @@ gulp.task('build', ['build:components', 'build:deps']);
 // DEV
 
 gulp.task('dev:build', () =>
-  gulp.src('node_modules/@material/elevation/_mixins.scss')
+  gulp.src('node_modules/@material/elevation/_mixins.scss', { base: 'node_modules/@material/'})
     .pipe(buildElevation())
-    .pipe(gulp.dest('packages/matsy-elevation')),
+    .pipe(gulp.dest('packages')),
 );
 
 gulp.task('dev', () => {

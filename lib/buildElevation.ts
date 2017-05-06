@@ -4,11 +4,11 @@ import { uniq } from 'lodash';
 import * as path from 'path';
 import * as postcss from 'postcss';
 import * as sass from 'postcss-scss';
-import { parse } from 'scss-parser';
 import * as through from 'through2';
 import * as ts from 'typescript';
 
 import handleComment from './handleComment';
+import transpileMixin from './transpileMixin';
 
 const debug = debugFactory('matsy');
 
@@ -219,6 +219,8 @@ function handleAtRule(options: IOptions, node: postcss.AtRule) {
       options.imp.material.push({ library: options.name, name });
       return;
     }
+  } else if (node.name === 'mixin') {
+    options.out.push(transpileMixin(node));
   }
 
   debug('Cannot handle atRule', node.name, node.params);

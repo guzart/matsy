@@ -38,6 +38,7 @@
     "lodash": "^4.17.4",
     "postcss-scss": "^0.4.1",
     "react": "^15.5.4",
+    "scss-parser": "^1.0.0",
     "styled-components": "2.0.0-17",
     "through2": "^2.0.3",
     "ts-node": "^3.0.3",
