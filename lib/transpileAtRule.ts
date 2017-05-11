@@ -25,7 +25,9 @@ function handleAtRule(options: IOptions, node: postcss.AtRule) {
       return;
     }
   } else if (node.name === 'mixin') {
+    debug(`Handle ${node.name} as mixin`);
     options.out.push(transpileMixin(options, node));
+    return;
   }
 
   debug('Cannot handle atRule', node.name, node.params);

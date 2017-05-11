@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 
 import handleNode, { IOptions } from './transpile';
 import transpileNode from './transpileNode';
+import * as tsUtils from './tsUtils';
 
 const debug = debugFactory('matsy');
 
@@ -15,10 +16,7 @@ function handleChildRuleDeclarations(options: IOptions, rule: postcss.Rule) {
     .filter((n) => n.type === 'decl')
     .map((decl: postcss.Declaration) => (`${decl.prop}: ${decl.value};`));
 
-  const tempHead = ts.createNode(ts.SyntaxKind.FirstTemplateToken, -1, -1) as ts.NoSubstitutionTemplateLiteral;
-  // tslint:disable-next-line
-  // synHeadNode.flags |= ts.NodeFlags.Synthesized;
-  tempHead.text = '\n  ' + declarations.join('\n  ') + '\n';
+  const tempHead = tsUtils.createNoSubstitutionTemplateLiteral(declarations.join('\n  '));
 
   const buildExpr = ts.createCall(
     ts.createIdentifier('styled'),

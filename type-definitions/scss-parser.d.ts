@@ -6,6 +6,8 @@ declare module 'scss-parser' {
     | 'block'
     | 'declaration'
     | 'function'
+    | 'identifier'
+    | 'interpolation'
     | 'property'
     | 'punctuation'
     | 'rule'
